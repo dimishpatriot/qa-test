@@ -1,0 +1,460 @@
+{
+	"info": {
+		"_postman_id": "c990c543-d981-4b73-b8c4-abfd21a31718",
+		"name": "qa-test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "status 200",
+			"item": [
+				{
+					"name": "/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fefd809b-ae5e-4715-bc1f-6196d5d148fb",
+								"exec": [
+									"pm.test(\"Status code 200\", function() {\r",
+									"    pm.expect(pm.response.to.have.status(200));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "index",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ba7f10ad-2204-44e3-a54f-b0be388890de",
+								"exec": [
+									"pm.test(\"Status code 200\", function() {\r",
+									"    pm.expect(pm.response.to.have.status(200));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/index",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"index"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "index count",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "51009ea0-2640-44a8-a373-408fc1f37483",
+								"exec": [
+									"pm.test(\"Status code 200\", function() {\r",
+									"    pm.expect(pm.response.to.have.status(200));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}?count=2",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"query": [
+								{
+									"key": "count",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "index count offset",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ff1a89f5-7740-4de5-84c4-54747da6722b",
+								"exec": [
+									"pm.test(\"Status code 200\", function() {\r",
+									"    pm.expect(pm.response.to.have.status(200));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}?offset=1&count=3",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"query": [
+								{
+									"key": "offset",
+									"value": "1"
+								},
+								{
+									"key": "count",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "index offset",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c9326a0b-7c38-44c5-85ce-affddb28bff8",
+								"exec": [
+									"pm.test(\"Status code 200\", function() {\r",
+									"    pm.expect(pm.response.to.have.status(200));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}?offset=5",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"query": [
+								{
+									"key": "offset",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "300a2684-1c4e-4bbf-89ba-812916e53999",
+								"exec": [
+									"pm.test(\"Status code 200\", function() {\r",
+									"    pm.expect(pm.response.to.have.status(200));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4047fd77-a25c-4e7b-9f8e-7b160fe70680",
+								"exec": [
+									"pm.test(\"Status code 200\", function() {\r",
+									"    pm.expect(pm.response.to.have.status(200));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "28b21a4c-c924-4b3e-bcd0-b2e7569c8dfe",
+								"exec": [
+									"pm.test(\"Status code 200\", function() {\r",
+									"    pm.expect(pm.response.to.have.status(200));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4445dddb-f83a-4da1-80f9-8e4fcb21d623",
+								"exec": [
+									"pm.test(\"Status code 200\", function() {\r",
+									"    pm.expect(pm.response.to.have.status(200));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "920535af-6db5-451d-b618-d2ca5bcd0613",
+								"exec": [
+									"pm.test(\"Status code 200\", function() {\r",
+									"    pm.expect(pm.response.to.have.status(200));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "HEAD",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "190b1716-5ed6-424b-b52d-a562651c6a11",
+								"exec": [
+									"pm.test(\"Status code 200\", function() {\r",
+									"    pm.expect(pm.response.to.have.status(200));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "OPTIONS",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}"
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "time to response",
+			"item": [
+				{
+					"name": "/ time",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f4d759c9-3a01-437d-8f22-cf09059b085c",
+								"exec": [
+									"pm.test(\"Time to response lower than 500 ms\", function() {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}"
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "json",
+			"item": [
+				{
+					"name": "/  json have body",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3d035806-1bb5-46c3-bf10-33230dd46f6b",
+								"exec": [
+									"pm.test(\"Response to have body\", function() {\r",
+									"    pm.expect(pm.response.to.have.body());\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/  json have status and result",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "275ba0e5-f680-439a-8b78-8e7e6f7cd9c3",
+								"exec": [
+									"pm.test(\"Status and result is exists in response\", function() {\r",
+									"    pm.expect(pm.response).to.have.jsonBody();\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}"
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
