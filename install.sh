@@ -1,4 +1,4 @@
-#!/bin/sh
+#! /bin/sh
 
 echo "\n === install required applications ==="
 cd ~

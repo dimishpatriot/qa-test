@@ -13,4 +13,4 @@ echo "\n=== MAIN ==="
 
 # step 4. stop, the container is automatically deleted using the key "--rm"
 echo "\n- stop and remove container -"
-docker stop qa-test
+docker stop -t 2 qa-test && echo "[OK]"
