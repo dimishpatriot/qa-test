@@ -8,7 +8,7 @@ echo "\n=== start server for funbox/qa-test ==="
 
 if [ -d "$target" ];
     then echo "\n- remove old project folder -"
-    rm -rf qa-test && echo "[OK]";
+    rm -rf $target && echo "[OK]";
 fi
 
 echo "\n- clone project from $url -"
