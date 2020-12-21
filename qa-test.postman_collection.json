@@ -9,67 +9,45 @@
 			"name": "positive_tests",
 			"item": [
 				{
-					"name": "/reset?",
+					"name": "correct reset method",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if (pm.response.code >= 200 && pm.response.code < 400) {\r",
-									"    // variables\r",
-									"    const jsonData = pm.response.json();\r",
-									"    const correctKeys = [\"status\"];\r",
+									"// request variables\r",
+									"const expectedKeys = [\"status\"];\r",
 									"\r",
-									"    // main\r",
-									"    pm.test(\"Status code 200\", function() {\r",
-									"        pm.expect(pm.response.to.have.status(200));\r",
-									"    });\r",
+									"// response variables from json if exist\r",
+									"var jsonData = Object();\r",
+									"var have_json;\r",
+									"pm.test(\"Response to have JSON-schema\", function() {\r",
+									"    try {\r",
+									"        jsonData = pm.response.json();\r",
+									"        have_json = true;\r",
+									"    }\r",
+									"    catch {\r",
+									"        have_json = false;\r",
+									"    };\r",
+									"    pm.expect(have_json).is.equal(true);\r",
+									"});\r",
+									"// postman does not contain normal methods for stopping all tests :(\r",
+									"if (have_json == false) {\r",
+									"    return;\r",
+									"};\r",
+									"var correct_keys = Boolean();\r",
+									"pm.test(\"All keys is correct\", function() {\r",
+									"    const actualKeys = Object.keys(jsonData);\r",
+									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
+									"});\r",
+									"// postman does not contain normal methods for stopping all tests :(\r",
+									"if (correct_keys == false) {\r",
+									"    return;\r",
+									"};\r",
 									"\r",
-									"    pm.test(\"Time to response lower than 500 ms\", function() {\r",
-									"        pm.expect(pm.response.responseTime).to.be.below(500);\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Response to have body\", function() {\r",
-									"        pm.expect(pm.response.to.have.body());\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Response to have content-type in header\", function() {\r",
-									"        pm.expect(pm.response.to.have.header(\"Content-Type\"));\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Response to have correct content type application/json\", function() {\r",
-									"        pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"All required keys in json\", function() {\r",
-									"        var goodKeys = true;\r",
-									"        for(var key in jsonData) {\r",
-									"            if (correctKeys.indexOf(key) == -1) {\r",
-									"                goodKeys = false;\r",
-									"            };\r",
-									"        };\r",
-									"        pm.expect(goodKeys).is.equal(true);\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Have not foreing keys\", function() {\r",
-									"        var foreingKeys = false;\r",
-									"        for(var key in jsonData) {\r",
-									"            if (correctKeys.indexOf(key) == -1) {\r",
-									"                foreingKeys = true;\r",
-									"            };\r",
-									"        };\r",
-									"        pm.expect(foreingKeys).is.equal(false);\r",
-									"    });\r",
-									"    \r",
-									"    pm.test(\"json.status is OK\", function() {\r",
-									"        pm.expect(jsonData.status).is.equal(\"OK\");\r",
-									"    });\r",
-									"}\r",
-									"else {\r",
-									"    pm.test(\"Get correct response\", function() {\r",
-									"        pm.expect(false).is.equal(true);\r",
-									"    })\r",
-									"};"
+									"pm.test(\"json.status is OK\", function() {\r",
+									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -92,110 +70,89 @@
 					"response": []
 				},
 				{
-					"name": "/index?offset&count",
+					"name": "correct index method with offset and count",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if (pm.response.code >= 200 && pm.response.code < 400) {\r",
-									"    // variables\r",
-									"    const jsonData = pm.response.json();\r",
-									"    const correctKeys = [\"status\", \"result\"];\r",
-									"    const first_user_id = pm.variables.get(\"first_user_id\");\r",
-									"    const offset = pm.variables.get(\"offset\");\r",
-									"    const count = pm.variables.get(\"count\");\r",
-									"    const users = jsonData.result;\r",
+									"// request variables\r",
+									"const expectedKeys = [\"status\", \"result\"];\r",
+									"const first_user_id = pm.variables.get(\"first_user_id\");\r",
+									"const offset = pm.variables.get(\"offset\");\r",
+									"const count = pm.variables.get(\"count\");\r",
 									"\r",
-									"    var ids = [];\r",
-									"    for (i in users) {\r",
-									"        ids.push(users[i].id);\r",
+									"// response variables from json if exist\r",
+									"var jsonData = Object();\r",
+									"var have_json;\r",
+									"pm.test(\"Response to have JSON-schema\", function() {\r",
+									"    try {\r",
+									"        jsonData = pm.response.json();\r",
+									"        have_json = true;\r",
+									"    }\r",
+									"    catch {\r",
+									"        have_json = false;\r",
 									"    };\r",
+									"    pm.expect(have_json).is.equal(true);\r",
+									"});\r",
 									"\r",
-									"    // main\r",
-									"    pm.test(\"Status code 200\", function() {\r",
-									"        pm.expect(pm.response.to.have.status(200));\r",
-									"    });\r",
+									"if (have_json == false) {\r",
+									"    return;\r",
+									"};\r",
 									"\r",
-									"    pm.test(\"Time to response lower than 500 ms\", function() {\r",
-									"        pm.expect(pm.response.responseTime).to.be.below(500);\r",
-									"    });\r",
+									"var correct_keys = Boolean();\r",
+									"pm.test(\"All keys is correct\", function() {\r",
+									"    const actualKeys = Object.keys(jsonData);\r",
+									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
+									"});\r",
 									"\r",
-									"    pm.test(\"Response to have body\", function() {\r",
-									"        pm.expect(pm.response.to.have.body());\r",
-									"    });\r",
+									"if (correct_keys == false) {\r",
+									"    return;\r",
+									"};\r",
 									"\r",
-									"    pm.test(\"Response to have content-type in header\", function() {\r",
-									"        pm.expect(pm.response.to.have.header(\"Content-Type\"));\r",
-									"    });\r",
+									"const users = jsonData[expectedKeys[1]];\r",
+									"var ids = [];\r",
+									"for (i in users) {\r",
+									"    ids.push(users[i].id);\r",
+									"};\r",
 									"\r",
-									"    pm.test(\"Response to have correct content type application/json\", function() {\r",
-									"        pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
-									"    });\r",
+									"pm.test(\"json.status is OK\", function() {\r",
+									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
+									"});\r",
 									"\r",
-									"    pm.test(\"All required keys in json\", function() {\r",
-									"        var goodKeys = true;\r",
-									"        for(var key in jsonData) {\r",
-									"            if (correctKeys.indexOf(key) == -1) {\r",
-									"                goodKeys = false;\r",
-									"            };\r",
+									"pm.test(\"Correct offset\", function() {\r",
+									"    var current_id = jsonData.result[0].id\r",
+									"    pm.expect(current_id - first_user_id).is.equal(offset);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct count of results\", function() {\r",
+									"    pm.expect(ids.length).is.equal(count);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Results is sorted by id ascending\", function() {\r",
+									"    var sorted_ids = [...ids].sort();\r",
+									"    pm.expect(JSON.stringify(sorted_ids)).is.equal(JSON.stringify(ids));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Type of result.id is string\", function() {\r",
+									"    goodType = \"string\";\r",
+									"    for (i in users) {\r",
+									"        if (typeof(users[i].id) != \"string\") {\r",
+									"            goodType = typeof(users[i].id);\r",
 									"        };\r",
-									"        pm.expect(goodKeys).is.equal(true);\r",
-									"    });\r",
+									"    };\r",
+									"    pm.expect(goodType).is.equal(\"string\");    \r",
+									"});\r",
 									"\r",
-									"    pm.test(\"Have not foreing keys\", function() {\r",
-									"        var foreingKeys = false;\r",
-									"        for(var key in jsonData) {\r",
-									"            if (correctKeys.indexOf(key) == -1) {\r",
-									"                foreingKeys = true;\r",
-									"            };\r",
+									"pm.test(\"Type of result.name is string\", function() {\r",
+									"    goodType = \"string\";\r",
+									"    for (i in users) {\r",
+									"        if (typeof(users[i].name) != \"string\") {\r",
+									"            goodType = typeof(users[i].id);\r",
 									"        };\r",
-									"        pm.expect(foreingKeys).is.equal(false);\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"json.status is OK\", function() {\r",
-									"        pm.expect(jsonData.status).is.equal(\"OK\");\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Correct offset\", function() {\r",
-									"        var current_id = jsonData.result[0].id\r",
-									"        pm.expect(current_id - first_user_id).is.equal(pm.variables.get(\"offset\"));\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Correct count of results\", function() {\r",
-									"        pm.expect(count).is.equal(ids.length);\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Results is sorted by id ascending\", function() {\r",
-									"        var sorted_ids = [...ids].sort();\r",
-									"        pm.expect(JSON.stringify(ids)).is.equal(JSON.stringify(sorted_ids));\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Type of result.id is string\", function() {\r",
-									"        goodType = \"string\";\r",
-									"        for (i in users) {\r",
-									"            if (typeof(users[i].id) != \"string\") {\r",
-									"                goodType = typeof(users[i].id);\r",
-									"            };\r",
-									"        };\r",
-									"        pm.expect(goodType).is.equal(\"string\");    \r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Type of result.name is string\", function() {\r",
-									"        goodType = \"string\";\r",
-									"        for (i in users) {\r",
-									"            if (typeof(users[i].name) != \"string\") {\r",
-									"                goodType = typeof(users[i].id);\r",
-									"            };\r",
-									"        };\r",
-									"        pm.expect(goodType).is.equal(\"string\");    \r",
-									"    });\r",
-									"}\r",
-									"else {\r",
-									"    pm.test(\"Get correct response\", function() {\r",
-									"        pm.expect(false).is.equal(true);\r",
-									"    })\r",
-									"};"
+									"    };\r",
+									"    pm.expect(goodType).is.equal(\"string\");    \r",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -223,11 +180,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}:{{port}}?offset={{offset}}&count={{count}}",
+							"raw": "{{host}}:{{port}}/index?offset={{offset}}&count={{count}}",
 							"host": [
 								"{{host}}"
 							],
 							"port": "{{port}}",
+							"path": [
+								"index"
+							],
 							"query": [
 								{
 									"key": "offset",
@@ -243,110 +203,87 @@
 					"response": []
 				},
 				{
-					"name": "/index?count",
+					"name": "correct index method with count",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if (pm.response.code >= 200 && pm.response.code < 400) {\r",
-									"    // variables\r",
-									"    const jsonData = pm.response.json();\r",
-									"    const correctKeys = [\"status\", \"result\"];\r",
-									"    const first_user_id = pm.variables.get(\"first_user_id\");\r",
-									"    const offset = pm.variables.get(\"offset\");\r",
-									"    const count = pm.variables.get(\"count\");\r",
-									"    const users = jsonData.result;\r",
+									"// request variables\r",
+									"const expectedKeys = [\"status\", \"result\"];\r",
+									"const first_user_id = pm.variables.get(\"first_user_id\");\r",
+									"const offset = pm.variables.get(\"offset\");\r",
+									"const count = pm.variables.get(\"count\");\r",
 									"\r",
-									"    var ids = [];\r",
-									"    for (i in users) {\r",
-									"        ids.push(users[i].id);\r",
+									"// response variables from json if exist\r",
+									"var jsonData = Object();\r",
+									"var have_json;\r",
+									"pm.test(\"Response to have JSON-schema\", function() {\r",
+									"    try {\r",
+									"        jsonData = pm.response.json();\r",
+									"        have_json = true;\r",
+									"    }\r",
+									"    catch {\r",
+									"        have_json = false;\r",
 									"    };\r",
+									"    pm.expect(have_json).is.equal(true);\r",
+									"});\r",
+									"// postman does not contain normal methods for stopping all tests :(\r",
+									"if (have_json == false) {\r",
+									"    return;\r",
+									"};\r",
+									"var correct_keys = Boolean();\r",
+									"pm.test(\"All keys is correct\", function() {\r",
+									"    const actualKeys = Object.keys(jsonData);\r",
+									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
+									"});\r",
+									"// postman does not contain normal methods for stopping all tests :(\r",
+									"if (correct_keys == false) {\r",
+									"    return;\r",
+									"};\r",
+									"const users = jsonData[expectedKeys[1]];\r",
+									"var ids = [];\r",
+									"for (i in users) {\r",
+									"    ids.push(users[i].id);\r",
+									"};\r",
 									"\r",
-									"    // main\r",
-									"    pm.test(\"Status code 200\", function() {\r",
-									"        pm.expect(pm.response.to.have.status(200));\r",
-									"    });\r",
+									"pm.test(\"json.status is OK\", function() {\r",
+									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
+									"});\r",
 									"\r",
-									"    pm.test(\"Time to response lower than 500 ms\", function() {\r",
-									"        pm.expect(pm.response.responseTime).to.be.below(500);\r",
-									"    });\r",
+									"pm.test(\"Offset is equal zero\", function() {\r",
+									"    var current_id = jsonData.result[0].id\r",
+									"    pm.expect(current_id - first_user_id).is.equal(0);\r",
+									"});\r",
 									"\r",
-									"    pm.test(\"Response to have body\", function() {\r",
-									"        pm.expect(pm.response.to.have.body());\r",
-									"    });\r",
+									"pm.test(\"Correct count of results\", function() {\r",
+									"    pm.expect(count).is.equal(ids.length);\r",
+									"});\r",
 									"\r",
-									"    pm.test(\"Response to have content-type in header\", function() {\r",
-									"        pm.expect(pm.response.to.have.header(\"Content-Type\"));\r",
-									"    });\r",
+									"pm.test(\"Results is sorted by id ascending\", function() {\r",
+									"    var sorted_ids = [...ids].sort();\r",
+									"    pm.expect(JSON.stringify(ids)).is.equal(JSON.stringify(sorted_ids));\r",
+									"});\r",
 									"\r",
-									"    pm.test(\"Response to have correct content type application/json\", function() {\r",
-									"        pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"All required keys in json\", function() {\r",
-									"        var goodKeys = true;\r",
-									"        for(var key in jsonData) {\r",
-									"            if (correctKeys.indexOf(key) == -1) {\r",
-									"                goodKeys = false;\r",
-									"            };\r",
+									"pm.test(\"Type of result.id is string\", function() {\r",
+									"    goodType = \"string\";\r",
+									"    for (i in users) {\r",
+									"        if (typeof(users[i].id) != \"string\") {\r",
+									"            goodType = typeof(users[i].id);\r",
 									"        };\r",
-									"        pm.expect(goodKeys).is.equal(true);\r",
-									"    });\r",
+									"    };\r",
+									"    pm.expect(goodType).is.equal(\"string\");    \r",
+									"});\r",
 									"\r",
-									"    pm.test(\"Have not foreing keys\", function() {\r",
-									"        var foreingKeys = false;\r",
-									"        for(var key in jsonData) {\r",
-									"            if (correctKeys.indexOf(key) == -1) {\r",
-									"                foreingKeys = true;\r",
-									"            };\r",
+									"pm.test(\"Type of result.name is string\", function() {\r",
+									"    goodType = \"string\";\r",
+									"    for (i in users) {\r",
+									"        if (typeof(users[i].name) != \"string\") {\r",
+									"            goodType = typeof(users[i].id);\r",
 									"        };\r",
-									"        pm.expect(foreingKeys).is.equal(false);\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"json.status is OK\", function() {\r",
-									"        pm.expect(jsonData.status).is.equal(\"OK\");\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Offset is equal zero\", function() {\r",
-									"        var current_id = jsonData.result[0].id\r",
-									"        pm.expect(current_id - first_user_id).is.equal(0);\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Correct count of results\", function() {\r",
-									"        pm.expect(count).is.equal(ids.length);\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Results is sorted by id ascending\", function() {\r",
-									"        var sorted_ids = [...ids].sort();\r",
-									"        pm.expect(JSON.stringify(ids)).is.equal(JSON.stringify(sorted_ids));\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Type of result.id is string\", function() {\r",
-									"        goodType = \"string\";\r",
-									"        for (i in users) {\r",
-									"            if (typeof(users[i].id) != \"string\") {\r",
-									"                goodType = typeof(users[i].id);\r",
-									"            };\r",
-									"        };\r",
-									"        pm.expect(goodType).is.equal(\"string\");    \r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Type of result.name is string\", function() {\r",
-									"        goodType = \"string\";\r",
-									"        for (i in users) {\r",
-									"            if (typeof(users[i].name) != \"string\") {\r",
-									"                goodType = typeof(users[i].id);\r",
-									"            };\r",
-									"        };\r",
-									"        pm.expect(goodType).is.equal(\"string\");    \r",
-									"    });\r",
-									"}\r",
-									"else {\r",
-									"    pm.test(\"Get correct response\", function() {\r",
-									"        pm.expect(false).is.equal(true);\r",
-									"    })\r",
-									"};"
+									"    };\r",
+									"    pm.expect(goodType).is.equal(\"string\");    \r",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -392,106 +329,85 @@
 					"response": []
 				},
 				{
-					"name": "/index?offset",
+					"name": "correct index method with offset",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if (pm.response.code >= 200 && pm.response.code < 400) {\r",
-									"    // variables\r",
-									"    const jsonData = pm.response.json();\r",
-									"    const correctKeys = [\"status\", \"result\"];\r",
-									"    const first_user_id = pm.variables.get(\"first_user_id\");\r",
-									"    const offset = pm.variables.get(\"offset\");\r",
-									"    const count = pm.variables.get(\"count\");\r",
-									"    const users = jsonData.result;\r",
+									"// request variables\r",
+									"const expectedKeys = [\"status\", \"result\"];\r",
+									"const first_user_id = pm.variables.get(\"first_user_id\");\r",
+									"const offset = pm.variables.get(\"offset\");\r",
+									"const count = pm.variables.get(\"count\");\r",
 									"\r",
-									"    var ids = [];\r",
-									"    for (i in users) {\r",
-									"        ids.push(users[i].id);\r",
+									"// response variables from json if exist\r",
+									"var jsonData = Object();\r",
+									"var have_json;\r",
+									"pm.test(\"Response to have JSON-schema\", function() {\r",
+									"    try {\r",
+									"        jsonData = pm.response.json();\r",
+									"        have_json = true;\r",
+									"    }\r",
+									"    catch {\r",
+									"        have_json = false;\r",
 									"    };\r",
+									"    pm.expect(have_json).is.equal(true);\r",
+									"});\r",
+									"// postman does not contain normal methods for stopping all tests :(\r",
+									"if (have_json == false) {\r",
+									"    return;\r",
+									"};\r",
 									"\r",
-									"    // main\r",
-									"    pm.test(\"Status code 200\", function() {\r",
-									"        pm.expect(pm.response.to.have.status(200));\r",
-									"    });\r",
+									"var correct_keys = Boolean();\r",
+									"pm.test(\"All keys is correct\", function() {\r",
+									"    const actualKeys = Object.keys(jsonData);\r",
+									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
+									"});\r",
+									"// postman does not contain normal methods for stopping all tests :(\r",
+									"if (correct_keys == false) {\r",
+									"    return;\r",
+									"};\r",
 									"\r",
-									"    pm.test(\"Time to response lower than 500 ms\", function() {\r",
-									"        pm.expect(pm.response.responseTime).to.be.below(500);\r",
-									"    });\r",
+									"const users = jsonData[expectedKeys[1]];\r",
+									"var ids = [];\r",
+									"for (i in users) {\r",
+									"    ids.push(users[i].id);\r",
+									"};\r",
 									"\r",
-									"    pm.test(\"Response to have body\", function() {\r",
-									"        pm.expect(pm.response.to.have.body());\r",
-									"    });\r",
+									"pm.test(\"json.status is OK\", function() {\r",
+									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
+									"});\r",
 									"\r",
-									"    pm.test(\"Response to have content-type in header\", function() {\r",
-									"        pm.expect(pm.response.to.have.header(\"Content-Type\"));\r",
-									"    });\r",
+									"pm.test(\"Correct offset\", function() {\r",
+									"    var current_id = jsonData.result[0].id\r",
+									"    pm.expect(current_id - first_user_id).is.equal(pm.variables.get(\"offset\"));\r",
+									"});\r",
 									"\r",
-									"    pm.test(\"Response to have correct content type application/json\", function() {\r",
-									"        pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
-									"    });\r",
+									"pm.test(\"Results is sorted by id ascending\", function() {\r",
+									"    var sorted_ids = [...ids].sort();\r",
+									"    pm.expect(JSON.stringify(ids)).is.equal(JSON.stringify(sorted_ids));\r",
+									"});\r",
 									"\r",
-									"    pm.test(\"All required keys in json\", function() {\r",
-									"        var goodKeys = true;\r",
-									"        for(var key in jsonData) {\r",
-									"            if (correctKeys.indexOf(key) == -1) {\r",
-									"                goodKeys = false;\r",
-									"            };\r",
+									"pm.test(\"Type of result.id is string\", function() {\r",
+									"    goodType = \"string\";\r",
+									"    for (i in users) {\r",
+									"        if (typeof(users[i].id) != \"string\") {\r",
+									"            goodType = typeof(users[i].id);\r",
 									"        };\r",
-									"        pm.expect(goodKeys).is.equal(true);\r",
-									"    });\r",
+									"    };\r",
+									"    pm.expect(goodType).is.equal(\"string\");    \r",
+									"});\r",
 									"\r",
-									"    pm.test(\"Have not foreing keys\", function() {\r",
-									"        var foreingKeys = false;\r",
-									"        for(var key in jsonData) {\r",
-									"            if (correctKeys.indexOf(key) == -1) {\r",
-									"                foreingKeys = true;\r",
-									"            };\r",
+									"pm.test(\"Type of result.name is string\", function() {\r",
+									"    goodType = \"string\";\r",
+									"    for (i in users) {\r",
+									"        if (typeof(users[i].name) != \"string\") {\r",
+									"            goodType = typeof(users[i].id);\r",
 									"        };\r",
-									"        pm.expect(foreingKeys).is.equal(false);\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"json.status is OK\", function() {\r",
-									"        pm.expect(jsonData.status).is.equal(\"OK\");\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Correct offset\", function() {\r",
-									"        var current_id = jsonData.result[0].id\r",
-									"        pm.expect(current_id - first_user_id).is.equal(pm.variables.get(\"offset\"));\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Results is sorted by id ascending\", function() {\r",
-									"        var sorted_ids = [...ids].sort();\r",
-									"        pm.expect(JSON.stringify(ids)).is.equal(JSON.stringify(sorted_ids));\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Type of result.id is string\", function() {\r",
-									"        goodType = \"string\";\r",
-									"        for (i in users) {\r",
-									"            if (typeof(users[i].id) != \"string\") {\r",
-									"                goodType = typeof(users[i].id);\r",
-									"            };\r",
-									"        };\r",
-									"        pm.expect(goodType).is.equal(\"string\");    \r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Type of result.name is string\", function() {\r",
-									"        goodType = \"string\";\r",
-									"        for (i in users) {\r",
-									"            if (typeof(users[i].name) != \"string\") {\r",
-									"                goodType = typeof(users[i].id);\r",
-									"            };\r",
-									"        };\r",
-									"        pm.expect(goodType).is.equal(\"string\");    \r",
-									"    });\r",
-									"}\r",
-									"else {\r",
-									"    pm.test(\"Get correct response\", function() {\r",
-									"        pm.expect(false).is.equal(true);\r",
-									"    })\r",
-									"};"
+									"    };\r",
+									"    pm.expect(goodType).is.equal(\"string\");    \r",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -534,106 +450,69 @@
 					"response": []
 				},
 				{
-					"name": "/get?id",
+					"name": "correct get method",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if (pm.response.code >= 200 && pm.response.code < 400) {\r",
-									"    // variables\r",
-									"    const jsonData = pm.response.json();\r",
-									"    const correctKeys = [\"status\", \"result\"];\r",
-									"    const first_user_id = pm.variables.get(\"first_user_id\");\r",
-									"    const offset = pm.variables.get(\"offset\");\r",
-									"    const count = pm.variables.get(\"count\");\r",
-									"    const users = jsonData.result;\r",
+									"// request variables\r",
+									"const expectedKeys = [\"status\", \"result\"];\r",
+									"const first_user_id = pm.variables.get(\"first_user_id\");\r",
 									"\r",
-									"    var ids = [];\r",
-									"    for (i in users) {\r",
-									"        ids.push(users[i].id);\r",
+									"// response variables\r",
+									"// response variables from json if exist\r",
+									"var jsonData = Object();\r",
+									"var have_json;\r",
+									"pm.test(\"Response to have JSON-schema\", function() {\r",
+									"    try {\r",
+									"        jsonData = pm.response.json();\r",
+									"        have_json = true;\r",
+									"    }\r",
+									"    catch {\r",
+									"        have_json = false;\r",
 									"    };\r",
+									"    pm.expect(have_json).is.equal(true);\r",
+									"});\r",
+									"// postman does not contain normal methods for stopping all tests :(\r",
+									"if (have_json == false) {\r",
+									"    return;\r",
+									"};\r",
+									"var correct_keys = Boolean();\r",
+									"pm.test(\"All keys is correct\", function() {\r",
+									"    const actualKeys = Object.keys(jsonData);\r",
+									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
+									"});\r",
+									"// postman does not contain normal methods for stopping all tests :(\r",
+									"if (correct_keys == false) {\r",
+									"    return;\r",
+									"};\r",
+									"const users = jsonData[expectedKeys[1]];\r",
+									"var ids = [];\r",
+									"for (i in users) {\r",
+									"    ids.push(users[i].id);\r",
+									"};\r",
 									"\r",
-									"    // main\r",
-									"    pm.test(\"Status code 200\", function() {\r",
-									"        pm.expect(pm.response.to.have.status(200));\r",
-									"    });\r",
+									"pm.test(\"json.status is OK\", function() {\r",
+									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
+									"});\r",
 									"\r",
-									"    pm.test(\"Time to response lower than 500 ms\", function() {\r",
-									"        pm.expect(pm.response.responseTime).to.be.below(500);\r",
-									"    });\r",
+									"pm.test(\"Correct user id in result\", function() {\r",
+									"    pm.expect(users.id).is.equal(pm.variables.get(\"id\"));\r",
+									"});\r",
 									"\r",
-									"    pm.test(\"Response to have body\", function() {\r",
-									"        pm.expect(pm.response.to.have.body());\r",
-									"    });\r",
+									"pm.test(\"Count of users is one\", function() {\r",
+									"    pm.expect(ids.length).is.equal(1);\r",
+									"});\r",
 									"\r",
-									"    pm.test(\"Response to have content-type in header\", function() {\r",
-									"        pm.expect(pm.response.to.have.header(\"Content-Type\"));\r",
-									"    });\r",
+									"pm.test(\"Type of user.id is string\", function() {\r",
+									"    pm.expect(typeof(users.id)).is.equal(\"string\");    \r",
+									"});\r",
 									"\r",
-									"    pm.test(\"Response to have correct content type application/json\", function() {\r",
-									"        pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
-									"    });\r",
-									"\r",
-									"    // keys in json\r",
-									"    pm.test(\"All required keys in json\", function() {\r",
-									"        var goodKeys = true;\r",
-									"        for(var key in jsonData) {\r",
-									"            if (correctKeys.indexOf(key) == -1) {\r",
-									"                goodKeys = false;\r",
-									"            };\r",
-									"        };\r",
-									"        pm.expect(goodKeys).is.equal(true);\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Have not foreing keys\", function() {\r",
-									"        var foreingKeys = false;\r",
-									"        for(var key in jsonData) {\r",
-									"            if (correctKeys.indexOf(key) == -1) {\r",
-									"                foreingKeys = true;\r",
-									"            };\r",
-									"        };\r",
-									"        pm.expect(foreingKeys).is.equal(false);\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"json.status is OK\", function() {\r",
-									"        pm.expect(jsonData.status).is.equal(\"OK\");\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Correct id in result\", function() {\r",
-									"        var current_id = jsonData.result[0].id\r",
-									"        pm.expect(current_id).is.equal(pm.variables.get(\"id\"));\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Count of results is one\", function() {\r",
-									"        pm.expect(count).is.equal(1);\r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Type of result.id is string\", function() {\r",
-									"        goodType = \"string\";\r",
-									"        for (i in users) {\r",
-									"            if (typeof(users[i].id) != \"string\") {\r",
-									"                goodType = typeof(users[i].id);\r",
-									"            };\r",
-									"        };\r",
-									"        pm.expect(goodType).is.equal(\"string\");    \r",
-									"    });\r",
-									"\r",
-									"    pm.test(\"Type of result.name is string\", function() {\r",
-									"        goodType = \"string\";\r",
-									"        for (i in users) {\r",
-									"            if (typeof(users[i].name) != \"string\") {\r",
-									"                goodType = typeof(users[i].id);\r",
-									"            };\r",
-									"        };\r",
-									"        pm.expect(goodType).is.equal(\"string\");    \r",
-									"    });\r",
-									"}\r",
-									"else {\r",
-									"    pm.test(\"Get correct response\", function() {\r",
-									"        pm.expect(false).is.equal(true);\r",
-									"    })\r",
-									"};"
+									"pm.test(\"Type of result.name is string\", function() {\r",
+									"    pm.expect(typeof(users.name)).is.equal(\"string\");    \r",
+									"});\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -677,6 +556,1314 @@
 						}
 					},
 					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function() {",
+							"    pm.expect(pm.response).to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Time to response lower than 500 ms\", function() {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});",
+							"",
+							"pm.test(\"Response to have body\", function() {",
+							"    pm.expect(pm.response.to.have.body());",
+							"});",
+							"",
+							"pm.test(\"Response to have content-type in header\", function() {",
+							"    pm.expect(pm.response.to.have.header(\"Content-Type\"));",
+							"});",
+							"",
+							"pm.test(\"Response to have correct content type application/json\", function() {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "negative_tests (404)",
+			"item": [
+				{
+					"name": "incorrect name of the reset method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/reset_reset",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"reset_reset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "incorrect name of the index method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"offset\", 1);\r",
+									"pm.variables.set(\"count\", 2);\r",
+									"\r",
+									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
+									"pm.sendRequest({\r",
+									"    url: url,\r",
+									"    method: 'GET',\r",
+									"}, function (err, res) {\r",
+									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/index_index?offset={{offset}}&count={{count}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"index_index"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "{{offset}}"
+								},
+								{
+									"key": "count",
+									"value": "{{count}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "incorrect name of the get method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
+									"pm.sendRequest({\r",
+									"    url: url,\r",
+									"    method: 'GET',\r",
+									"}, function (err, res) {\r",
+									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
+									"    pm.variables.set(\"id\", res.json().result[0].id + 2);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/get_get?id={{id}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"get_get"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "correct index method with big offset",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"offset\", pm.variables.get(\"big\"));\r",
+									"pm.variables.set(\"count\", 2);\r",
+									"\r",
+									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
+									"pm.sendRequest({\r",
+									"    url: url,\r",
+									"    method: 'GET',\r",
+									"}, function (err, res) {\r",
+									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/index?offset={{offset}}&count={{count}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"index"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "{{offset}}"
+								},
+								{
+									"key": "count",
+									"value": "{{count}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "correct index method with text in offset",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"offset\", \"text\");\r",
+									"pm.variables.set(\"count\", 2);\r",
+									"\r",
+									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
+									"pm.sendRequest({\r",
+									"    url: url,\r",
+									"    method: 'GET',\r",
+									"}, function (err, res) {\r",
+									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/index_index?offset={{offset}}&count={{count}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"index_index"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "{{offset}}"
+								},
+								{
+									"key": "count",
+									"value": "{{count}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "correct index method with text in count",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"offset\", 0);\r",
+									"pm.variables.set(\"count\", \"text\");\r",
+									"\r",
+									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
+									"pm.sendRequest({\r",
+									"    url: url,\r",
+									"    method: 'GET',\r",
+									"}, function (err, res) {\r",
+									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/index_index?offset={{offset}}&count={{count}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"index_index"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "{{offset}}"
+								},
+								{
+									"key": "count",
+									"value": "{{count}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get method without params",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/get",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get method with absent id (less than exist)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/get&id={{small}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"get&id={{small}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get method with absent id (more than exist)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/get&id={{big}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"get&id={{big}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get method with text in id param",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/get&id=\"text\"",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"get&id=\"text\""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "The behavior for this group of tests is not defined in the API description",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 404\", function() {",
+							"    pm.expect(pm.response).to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Time to response lower than 500 ms\", function() {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});",
+							"",
+							"pm.test(\"Response to have body\", function() {",
+							"    pm.expect(pm.response.to.have.body());",
+							"});",
+							"",
+							"pm.test(\"Response to have content-type in header\", function() {",
+							"    pm.expect(pm.response.to.have.header(\"Content-Type\"));",
+							"});",
+							"",
+							"pm.test(\"Response to have correct content type text/html; charset=utf-8\", function() {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/html; charset=utf-8\");",
+							"});"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "negative_tests (200)",
+			"item": [
+				{
+					"name": "have not method (only OK)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// request variables\r",
+									"const expectedKeys = [\"status\", \"results\"];\r",
+									"\r",
+									"// response variables from json if exist\r",
+									"var jsonData = Object();\r",
+									"var have_json;\r",
+									"pm.test(\"Response to have JSON-schema\", function() {\r",
+									"    try {\r",
+									"        jsonData = pm.response.json();\r",
+									"        have_json = true;\r",
+									"    }\r",
+									"    catch {\r",
+									"        have_json = false;\r",
+									"    };\r",
+									"    pm.expect(have_json).is.equal(true);\r",
+									"});\r",
+									"// postman does not contain normal methods for stopping all tests :(\r",
+									"if (have_json == false) {\r",
+									"    return;\r",
+									"};\r",
+									"var correct_keys = Boolean();\r",
+									"pm.test(\"All keys is correct\", function() {\r",
+									"    const actualKeys = Object.keys(jsonData);\r",
+									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
+									"});\r",
+									"// postman does not contain normal methods for stopping all tests :(\r",
+									"if (correct_keys == false) {\r",
+									"    return;\r",
+									"};\r",
+									"\r",
+									"pm.test(\"json.status is OK\", function() {\r",
+									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "correct reset method + adding params (ignore)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// request variables\r",
+									"const expectedKeys = [\"status\"];\r",
+									"\r",
+									"// response variables from json if exist\r",
+									"var jsonData = Object();\r",
+									"var have_json;\r",
+									"pm.test(\"Response to have JSON-schema\", function() {\r",
+									"    try {\r",
+									"        jsonData = pm.response.json();\r",
+									"        have_json = true;\r",
+									"    }\r",
+									"    catch {\r",
+									"        have_json = false;\r",
+									"    };\r",
+									"    pm.expect(have_json).is.equal(true);\r",
+									"});\r",
+									"// postman does not contain normal methods for stopping all tests :(\r",
+									"if (have_json == false) {\r",
+									"    return;\r",
+									"};\r",
+									"var correct_keys = Boolean();\r",
+									"pm.test(\"All keys is correct\", function() {\r",
+									"    const actualKeys = Object.keys(jsonData);\r",
+									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
+									"});\r",
+									"// postman does not contain normal methods for stopping all tests :(\r",
+									"if (correct_keys == false) {\r",
+									"    return;\r",
+									"};\r",
+									"\r",
+									"pm.test(\"json.status is OK\", function() {\r",
+									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/reset&id=10",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"reset&id=10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "index method without params (get all)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// request variables\r",
+									"const expectedKeys = [\"status\", \"result\"];\r",
+									"const first_user_id = pm.variables.get(\"first_user_id\");\r",
+									"const offset = pm.variables.get(\"offset\");\r",
+									"const count = pm.variables.get(\"count\");\r",
+									"\r",
+									"// response variables from json if exist\r",
+									"var jsonData = Object();\r",
+									"var have_json;\r",
+									"pm.test(\"Response to have JSON-schema\", function() {\r",
+									"    try {\r",
+									"        jsonData = pm.response.json();\r",
+									"        have_json = true;\r",
+									"    }\r",
+									"    catch {\r",
+									"        have_json = false;\r",
+									"    };\r",
+									"    pm.expect(have_json).is.equal(true);\r",
+									"});\r",
+									"\r",
+									"if (have_json == false) {\r",
+									"    return;\r",
+									"};\r",
+									"\r",
+									"var correct_keys = Boolean();\r",
+									"pm.test(\"All keys is correct\", function() {\r",
+									"    const actualKeys = Object.keys(jsonData);\r",
+									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
+									"});\r",
+									"\r",
+									"if (correct_keys == false) {\r",
+									"    return;\r",
+									"};\r",
+									"\r",
+									"const users = jsonData[expectedKeys[1]];\r",
+									"var ids = [];\r",
+									"for (i in users) {\r",
+									"    ids.push(users[i].id);\r",
+									"};\r",
+									"\r",
+									"pm.test(\"json.status is OK\", function() {\r",
+									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct offset\", function() {\r",
+									"    var current_id = jsonData.result[0].id\r",
+									"    pm.expect(current_id - first_user_id).is.equal(offset);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct count of results\", function() {\r",
+									"    pm.expect(ids.length).is.equal(count);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Results is sorted by id ascending\", function() {\r",
+									"    var sorted_ids = [...ids].sort();\r",
+									"    pm.expect(JSON.stringify(sorted_ids)).is.equal(JSON.stringify(ids));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Type of result.id is string\", function() {\r",
+									"    goodType = \"string\";\r",
+									"    for (i in users) {\r",
+									"        if (typeof(users[i].id) != \"string\") {\r",
+									"            goodType = typeof(users[i].id);\r",
+									"        };\r",
+									"    };\r",
+									"    pm.expect(goodType).is.equal(\"string\");    \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Type of result.name is string\", function() {\r",
+									"    goodType = \"string\";\r",
+									"    for (i in users) {\r",
+									"        if (typeof(users[i].name) != \"string\") {\r",
+									"            goodType = typeof(users[i].id);\r",
+									"        };\r",
+									"    };\r",
+									"    pm.expect(goodType).is.equal(\"string\");    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"offset\", 0);\r",
+									"pm.variables.set(\"count\", 10);\r",
+									"\r",
+									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
+									"pm.sendRequest({\r",
+									"    url: url,\r",
+									"    method: 'GET',\r",
+									"}, function (err, res) {\r",
+									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/index",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"index"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "index method with big count (get all starts from offset)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// request variables\r",
+									"const expectedKeys = [\"status\", \"result\"];\r",
+									"const first_user_id = pm.variables.get(\"first_user_id\");\r",
+									"const offset = pm.variables.get(\"offset\");\r",
+									"const count = pm.variables.get(\"count\");\r",
+									"\r",
+									"// response variables from json if exist\r",
+									"var jsonData = Object();\r",
+									"var have_json;\r",
+									"pm.test(\"Response to have JSON-schema\", function() {\r",
+									"    try {\r",
+									"        jsonData = pm.response.json();\r",
+									"        have_json = true;\r",
+									"    }\r",
+									"    catch {\r",
+									"        have_json = false;\r",
+									"    };\r",
+									"    pm.expect(have_json).is.equal(true);\r",
+									"});\r",
+									"\r",
+									"if (have_json == false) {\r",
+									"    return;\r",
+									"};\r",
+									"\r",
+									"var correct_keys = Boolean();\r",
+									"pm.test(\"All keys is correct\", function() {\r",
+									"    const actualKeys = Object.keys(jsonData);\r",
+									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
+									"});\r",
+									"\r",
+									"if (correct_keys == false) {\r",
+									"    return;\r",
+									"};\r",
+									"\r",
+									"const users = jsonData[expectedKeys[1]];\r",
+									"var ids = [];\r",
+									"for (i in users) {\r",
+									"    ids.push(users[i].id);\r",
+									"};\r",
+									"\r",
+									"pm.test(\"json.status is OK\", function() {\r",
+									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct offset\", function() {\r",
+									"    var current_id = jsonData.result[0].id\r",
+									"    pm.expect(current_id - first_user_id).is.equal(offset);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct count of results\", function() {\r",
+									"    pm.expect(ids.length).is.equal(pm.environment.get(\"num_users\") - offset);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Results is sorted by id ascending\", function() {\r",
+									"    var sorted_ids = [...ids].sort();\r",
+									"    pm.expect(JSON.stringify(sorted_ids)).is.equal(JSON.stringify(ids));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Type of result.id is string\", function() {\r",
+									"    goodType = \"string\";\r",
+									"    for (i in users) {\r",
+									"        if (typeof(users[i].id) != \"string\") {\r",
+									"            goodType = typeof(users[i].id);\r",
+									"        };\r",
+									"    };\r",
+									"    pm.expect(goodType).is.equal(\"string\");    \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Type of result.name is string\", function() {\r",
+									"    goodType = \"string\";\r",
+									"    for (i in users) {\r",
+									"        if (typeof(users[i].name) != \"string\") {\r",
+									"            goodType = typeof(users[i].id);\r",
+									"        };\r",
+									"    };\r",
+									"    pm.expect(goodType).is.equal(\"string\");    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"offset\", 0);\r",
+									"pm.variables.set(\"count\", pm.environment.get(\"big\"));\r",
+									"\r",
+									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
+									"pm.sendRequest({\r",
+									"    url: url,\r",
+									"    method: 'GET',\r",
+									"}, function (err, res) {\r",
+									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/index&offset={{offset}}&count={{count}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"index&offset={{offset}}&count={{count}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "correct index method with offset and count + adding params (ignore)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// request variables\r",
+									"const expectedKeys = [\"status\", \"result\"];\r",
+									"const first_user_id = pm.variables.get(\"first_user_id\");\r",
+									"const offset = pm.variables.get(\"offset\");\r",
+									"const count = pm.variables.get(\"count\");\r",
+									"\r",
+									"// response variables from json if exist\r",
+									"var jsonData = Object();\r",
+									"var have_json;\r",
+									"pm.test(\"Response to have JSON-schema\", function() {\r",
+									"    try {\r",
+									"        jsonData = pm.response.json();\r",
+									"        have_json = true;\r",
+									"    }\r",
+									"    catch {\r",
+									"        have_json = false;\r",
+									"    };\r",
+									"    pm.expect(have_json).is.equal(true);\r",
+									"});\r",
+									"\r",
+									"if (have_json == false) {\r",
+									"    return;\r",
+									"};\r",
+									"\r",
+									"var correct_keys = Boolean();\r",
+									"pm.test(\"All keys is correct\", function() {\r",
+									"    const actualKeys = Object.keys(jsonData);\r",
+									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
+									"});\r",
+									"\r",
+									"if (correct_keys == false) {\r",
+									"    return;\r",
+									"};\r",
+									"\r",
+									"const users = jsonData[expectedKeys[1]];\r",
+									"var ids = [];\r",
+									"for (i in users) {\r",
+									"    ids.push(users[i].id);\r",
+									"};\r",
+									"\r",
+									"pm.test(\"json.status is OK\", function() {\r",
+									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct offset\", function() {\r",
+									"    var current_id = jsonData.result[0].id\r",
+									"    pm.expect(current_id - first_user_id).is.equal(pm.variables.get(\"offset\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct count of results\", function() {\r",
+									"    pm.expect(ids.length).is.equal(count);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Results is sorted by id ascending\", function() {\r",
+									"    var sorted_ids = [...ids].sort();\r",
+									"    pm.expect(JSON.stringify(sorted_ids)).is.equal(JSON.stringify(ids));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Type of result.id is string\", function() {\r",
+									"    goodType = \"string\";\r",
+									"    for (i in users) {\r",
+									"        if (typeof(users[i].id) != \"string\") {\r",
+									"            goodType = typeof(users[i].id);\r",
+									"        };\r",
+									"    };\r",
+									"    pm.expect(goodType).is.equal(\"string\");    \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Type of result.name is string\", function() {\r",
+									"    goodType = \"string\";\r",
+									"    for (i in users) {\r",
+									"        if (typeof(users[i].name) != \"string\") {\r",
+									"            goodType = typeof(users[i].id);\r",
+									"        };\r",
+									"    };\r",
+									"    pm.expect(goodType).is.equal(\"string\");    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"offset\", 1);\r",
+									"pm.variables.set(\"count\", 2);\r",
+									"\r",
+									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
+									"pm.sendRequest({\r",
+									"    url: url,\r",
+									"    method: 'GET',\r",
+									"}, function (err, res) {\r",
+									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/index?offset={{offset}}&count={{count}}&any_param=1",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"index"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "{{offset}}"
+								},
+								{
+									"key": "count",
+									"value": "{{count}}"
+								},
+								{
+									"key": "any_param",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "correct index method with count + adding params (ignore)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// request variables\r",
+									"const expectedKeys = [\"status\", \"result\"];\r",
+									"const first_user_id = pm.variables.get(\"first_user_id\");\r",
+									"const offset = pm.variables.get(\"offset\");\r",
+									"const count = pm.variables.get(\"count\");\r",
+									"\r",
+									"// response variables from json if exist\r",
+									"var jsonData = Object();\r",
+									"var have_json;\r",
+									"pm.test(\"Response to have JSON-schema\", function() {\r",
+									"    try {\r",
+									"        jsonData = pm.response.json();\r",
+									"        have_json = true;\r",
+									"    }\r",
+									"    catch {\r",
+									"        have_json = false;\r",
+									"    };\r",
+									"    pm.expect(have_json).is.equal(true);\r",
+									"});\r",
+									"// postman does not contain normal methods for stopping all tests :(\r",
+									"if (have_json == false) {\r",
+									"    return;\r",
+									"};\r",
+									"var correct_keys = Boolean();\r",
+									"pm.test(\"All keys is correct\", function() {\r",
+									"    const actualKeys = Object.keys(jsonData);\r",
+									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
+									"});\r",
+									"// postman does not contain normal methods for stopping all tests :(\r",
+									"if (correct_keys == false) {\r",
+									"    return;\r",
+									"};\r",
+									"const users = jsonData[expectedKeys[1]];\r",
+									"var ids = [];\r",
+									"for (i in users) {\r",
+									"    ids.push(users[i].id);\r",
+									"};\r",
+									"\r",
+									"pm.test(\"json.status is OK\", function() {\r",
+									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Offset is equal zero\", function() {\r",
+									"    var current_id = jsonData.result[0].id\r",
+									"    pm.expect(current_id - first_user_id).is.equal(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct count of results\", function() {\r",
+									"    pm.expect(count).is.equal(ids.length);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Results is sorted by id ascending\", function() {\r",
+									"    var sorted_ids = [...ids].sort();\r",
+									"    pm.expect(JSON.stringify(ids)).is.equal(JSON.stringify(sorted_ids));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Type of result.id is string\", function() {\r",
+									"    goodType = \"string\";\r",
+									"    for (i in users) {\r",
+									"        if (typeof(users[i].id) != \"string\") {\r",
+									"            goodType = typeof(users[i].id);\r",
+									"        };\r",
+									"    };\r",
+									"    pm.expect(goodType).is.equal(\"string\");    \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Type of result.name is string\", function() {\r",
+									"    goodType = \"string\";\r",
+									"    for (i in users) {\r",
+									"        if (typeof(users[i].name) != \"string\") {\r",
+									"            goodType = typeof(users[i].id);\r",
+									"        };\r",
+									"    };\r",
+									"    pm.expect(goodType).is.equal(\"string\");    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"count\", 2);\r",
+									"\r",
+									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
+									"pm.sendRequest({\r",
+									"    url: url,\r",
+									"    method: 'GET',\r",
+									"}, function (err, res) {\r",
+									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/index?count={{count}}&any_param=1",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"index"
+							],
+							"query": [
+								{
+									"key": "count",
+									"value": "{{count}}"
+								},
+								{
+									"key": "any_param",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "correct index method with offset + adding params (ignore)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// request variables\r",
+									"const expectedKeys = [\"status\", \"result\"];\r",
+									"const first_user_id = pm.variables.get(\"first_user_id\");\r",
+									"const offset = pm.variables.get(\"offset\");\r",
+									"const count = pm.variables.get(\"count\");\r",
+									"\r",
+									"// response variables from json if exist\r",
+									"var jsonData = Object();\r",
+									"var have_json;\r",
+									"pm.test(\"Response to have JSON-schema\", function() {\r",
+									"    try {\r",
+									"        jsonData = pm.response.json();\r",
+									"        have_json = true;\r",
+									"    }\r",
+									"    catch {\r",
+									"        have_json = false;\r",
+									"    };\r",
+									"    pm.expect(have_json).is.equal(true);\r",
+									"});\r",
+									"// postman does not contain normal methods for stopping all tests :(\r",
+									"if (have_json == false) {\r",
+									"    return;\r",
+									"};\r",
+									"\r",
+									"var correct_keys = Boolean();\r",
+									"pm.test(\"All keys is correct\", function() {\r",
+									"    const actualKeys = Object.keys(jsonData);\r",
+									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
+									"});\r",
+									"// postman does not contain normal methods for stopping all tests :(\r",
+									"if (correct_keys == false) {\r",
+									"    return;\r",
+									"};\r",
+									"\r",
+									"const users = jsonData[expectedKeys[1]];\r",
+									"var ids = [];\r",
+									"for (i in users) {\r",
+									"    ids.push(users[i].id);\r",
+									"};\r",
+									"\r",
+									"pm.test(\"json.status is OK\", function() {\r",
+									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct offset\", function() {\r",
+									"    var current_id = jsonData.result[0].id\r",
+									"    pm.expect(current_id - first_user_id).is.equal(pm.variables.get(\"offset\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Results is sorted by id ascending\", function() {\r",
+									"    var sorted_ids = [...ids].sort();\r",
+									"    pm.expect(JSON.stringify(ids)).is.equal(JSON.stringify(sorted_ids));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Type of result.id is string\", function() {\r",
+									"    goodType = \"string\";\r",
+									"    for (i in users) {\r",
+									"        if (typeof(users[i].id) != \"string\") {\r",
+									"            goodType = typeof(users[i].id);\r",
+									"        };\r",
+									"    };\r",
+									"    pm.expect(goodType).is.equal(\"string\");    \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Type of result.name is string\", function() {\r",
+									"    goodType = \"string\";\r",
+									"    for (i in users) {\r",
+									"        if (typeof(users[i].name) != \"string\") {\r",
+									"            goodType = typeof(users[i].id);\r",
+									"        };\r",
+									"    };\r",
+									"    pm.expect(goodType).is.equal(\"string\");    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"offset\", 5);\r",
+									"\r",
+									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
+									"pm.sendRequest({\r",
+									"    url: url,\r",
+									"    method: 'GET',\r",
+									"}, function (err, res) {\r",
+									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}?offset={{offset}}&any_param=1",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"query": [
+								{
+									"key": "offset",
+									"value": "{{offset}}"
+								},
+								{
+									"key": "any_param",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "The behavior for this group of tests is not defined in the API description",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function() {",
+							"    pm.expect(pm.response).to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Time to response lower than 500 ms\", function() {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});",
+							"",
+							"pm.test(\"Response to have body\", function() {",
+							"    pm.expect(pm.response.to.have.body());",
+							"});",
+							"",
+							"pm.test(\"Response to have content-type in header\", function() {",
+							"    pm.expect(pm.response.to.have.header(\"Content-Type\"));",
+							"});",
+							"",
+							"pm.test(\"Response to have correct content type application/json\", function() {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});"
+						]
+					}
 				}
 			]
 		}
