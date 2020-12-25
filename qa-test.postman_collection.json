@@ -9,553 +9,786 @@
 			"name": "positive_tests",
 			"item": [
 				{
-					"name": "correct reset method",
-					"event": [
+					"name": "/reset",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// request variables\r",
-									"const expectedKeys = [\"status\"];\r",
-									"\r",
-									"// response variables from json if exist\r",
-									"var jsonData = Object();\r",
-									"var have_json;\r",
-									"pm.test(\"Response to have JSON-schema\", function() {\r",
-									"    try {\r",
-									"        jsonData = pm.response.json();\r",
-									"        have_json = true;\r",
-									"    }\r",
-									"    catch {\r",
-									"        have_json = false;\r",
-									"    };\r",
-									"    pm.expect(have_json).is.equal(true);\r",
-									"});\r",
-									"// postman does not contain normal methods for stopping all tests :(\r",
-									"if (have_json == false) {\r",
-									"    return;\r",
-									"};\r",
-									"var correct_keys = Boolean();\r",
-									"pm.test(\"All keys is correct\", function() {\r",
-									"    const actualKeys = Object.keys(jsonData);\r",
-									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
-									"});\r",
-									"// postman does not contain normal methods for stopping all tests :(\r",
-									"if (correct_keys == false) {\r",
-									"    return;\r",
-									"};\r",
-									"\r",
-									"pm.test(\"json.status is OK\", function() {\r",
-									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}/reset",
-							"host": [
-								"{{host}}"
+							"name": "\"GET /reset\" без параметров",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
 							],
-							"port": "{{port}}",
-							"path": [
-								"reset"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "correct index method with offset and count",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// request variables\r",
-									"const expectedKeys = [\"status\", \"result\"];\r",
-									"const first_user_id = pm.variables.get(\"first_user_id\");\r",
-									"const offset = pm.variables.get(\"offset\");\r",
-									"const count = pm.variables.get(\"count\");\r",
-									"\r",
-									"// response variables from json if exist\r",
-									"var jsonData = Object();\r",
-									"var have_json;\r",
-									"pm.test(\"Response to have JSON-schema\", function() {\r",
-									"    try {\r",
-									"        jsonData = pm.response.json();\r",
-									"        have_json = true;\r",
-									"    }\r",
-									"    catch {\r",
-									"        have_json = false;\r",
-									"    };\r",
-									"    pm.expect(have_json).is.equal(true);\r",
-									"});\r",
-									"\r",
-									"if (have_json == false) {\r",
-									"    return;\r",
-									"};\r",
-									"\r",
-									"var correct_keys = Boolean();\r",
-									"pm.test(\"All keys is correct\", function() {\r",
-									"    const actualKeys = Object.keys(jsonData);\r",
-									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
-									"});\r",
-									"\r",
-									"if (correct_keys == false) {\r",
-									"    return;\r",
-									"};\r",
-									"\r",
-									"const users = jsonData[expectedKeys[1]];\r",
-									"var ids = [];\r",
-									"for (i in users) {\r",
-									"    ids.push(users[i].id);\r",
-									"};\r",
-									"\r",
-									"pm.test(\"json.status is OK\", function() {\r",
-									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct offset\", function() {\r",
-									"    var current_id = jsonData.result[0].id\r",
-									"    pm.expect(current_id - first_user_id).is.equal(offset);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct count of results\", function() {\r",
-									"    pm.expect(ids.length).is.equal(count);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Results is sorted by id ascending\", function() {\r",
-									"    var sorted_ids = [...ids].sort();\r",
-									"    pm.expect(JSON.stringify(sorted_ids)).is.equal(JSON.stringify(ids));\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Type of result.id is string\", function() {\r",
-									"    goodType = \"string\";\r",
-									"    for (i in users) {\r",
-									"        if (typeof(users[i].id) != \"string\") {\r",
-									"            goodType = typeof(users[i].id);\r",
-									"        };\r",
-									"    };\r",
-									"    pm.expect(goodType).is.equal(\"string\");    \r",
-									"});\r",
-									"\r",
-									"pm.test(\"Type of result.name is string\", function() {\r",
-									"    goodType = \"string\";\r",
-									"    for (i in users) {\r",
-									"        if (typeof(users[i].name) != \"string\") {\r",
-									"            goodType = typeof(users[i].id);\r",
-									"        };\r",
-									"    };\r",
-									"    pm.expect(goodType).is.equal(\"string\");    \r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/reset",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"reset"
+									]
+								}
+							},
+							"response": []
 						},
 						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"pm.variables.set(\"offset\", 1);\r",
-									"pm.variables.set(\"count\", 2);\r",
-									"\r",
-									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
-									"pm.sendRequest({\r",
-									"    url: url,\r",
-									"    method: 'GET',\r",
-									"}, function (err, res) {\r",
-									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}/index?offset={{offset}}&count={{count}}",
-							"host": [
-								"{{host}}"
-							],
-							"port": "{{port}}",
-							"path": [
-								"index"
-							],
-							"query": [
+							"name": "\"GET /reset\" без параметров дважды",
+							"event": [
 								{
-									"key": "offset",
-									"value": "{{offset}}"
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Начальный ID пользователей меняется\", function() {\r",
+											"    var new_id;\r",
+											"    var old_id;\r",
+											"    pm.sendRequest({\r",
+											"        url: url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\"),\r",
+											"        method: 'GET',\r",
+											"    }, function (err, res) {\r",
+											"        new_id = res.json().result[0].id.toString();\r",
+											"        old_id = pm.environment.get(\"first_user_id\");\r",
+											"        pm.expect(new_id).is.not.equal(old_id);\r",
+											"    });\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
 								},
 								{
-									"key": "count",
-									"value": "{{count}}"
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({\r",
+											"    url: pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\"),\r",
+											"    method: 'GET',\r",
+											"}, function (err, res) {\r",
+											"    var first_user_id = res.json().result[0].id.toString();\r",
+											"    pm.variables.set(\"first_user_id\", first_user_id, String);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
 								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "correct index method with count",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// request variables\r",
-									"const expectedKeys = [\"status\", \"result\"];\r",
-									"const first_user_id = pm.variables.get(\"first_user_id\");\r",
-									"const offset = pm.variables.get(\"offset\");\r",
-									"const count = pm.variables.get(\"count\");\r",
-									"\r",
-									"// response variables from json if exist\r",
-									"var jsonData = Object();\r",
-									"var have_json;\r",
-									"pm.test(\"Response to have JSON-schema\", function() {\r",
-									"    try {\r",
-									"        jsonData = pm.response.json();\r",
-									"        have_json = true;\r",
-									"    }\r",
-									"    catch {\r",
-									"        have_json = false;\r",
-									"    };\r",
-									"    pm.expect(have_json).is.equal(true);\r",
-									"});\r",
-									"// postman does not contain normal methods for stopping all tests :(\r",
-									"if (have_json == false) {\r",
-									"    return;\r",
-									"};\r",
-									"var correct_keys = Boolean();\r",
-									"pm.test(\"All keys is correct\", function() {\r",
-									"    const actualKeys = Object.keys(jsonData);\r",
-									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
-									"});\r",
-									"// postman does not contain normal methods for stopping all tests :(\r",
-									"if (correct_keys == false) {\r",
-									"    return;\r",
-									"};\r",
-									"const users = jsonData[expectedKeys[1]];\r",
-									"var ids = [];\r",
-									"for (i in users) {\r",
-									"    ids.push(users[i].id);\r",
-									"};\r",
-									"\r",
-									"pm.test(\"json.status is OK\", function() {\r",
-									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Offset is equal zero\", function() {\r",
-									"    var current_id = jsonData.result[0].id\r",
-									"    pm.expect(current_id - first_user_id).is.equal(0);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct count of results\", function() {\r",
-									"    pm.expect(count).is.equal(ids.length);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Results is sorted by id ascending\", function() {\r",
-									"    var sorted_ids = [...ids].sort();\r",
-									"    pm.expect(JSON.stringify(ids)).is.equal(JSON.stringify(sorted_ids));\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Type of result.id is string\", function() {\r",
-									"    goodType = \"string\";\r",
-									"    for (i in users) {\r",
-									"        if (typeof(users[i].id) != \"string\") {\r",
-									"            goodType = typeof(users[i].id);\r",
-									"        };\r",
-									"    };\r",
-									"    pm.expect(goodType).is.equal(\"string\");    \r",
-									"});\r",
-									"\r",
-									"pm.test(\"Type of result.name is string\", function() {\r",
-									"    goodType = \"string\";\r",
-									"    for (i in users) {\r",
-									"        if (typeof(users[i].name) != \"string\") {\r",
-									"            goodType = typeof(users[i].id);\r",
-									"        };\r",
-									"    };\r",
-									"    pm.expect(goodType).is.equal(\"string\");    \r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/reset",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"reset"
+									]
+								}
+							},
+							"response": []
 						},
+						{
+							"name": "\"GET /reset\" с дополнительным параметром",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/reset&add=10",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"reset&add=10"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
+								"type": "text/javascript",
 								"exec": [
-									"pm.variables.set(\"count\", 2);\r",
-									"\r",
-									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
-									"pm.sendRequest({\r",
-									"    url: url,\r",
-									"    method: 'GET',\r",
-									"}, function (err, res) {\r",
-									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}/index?count={{count}}",
-							"host": [
-								"{{host}}"
-							],
-							"port": "{{port}}",
-							"path": [
-								"index"
-							],
-							"query": [
-								{
-									"key": "count",
-									"value": "{{count}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "correct index method with offset",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// request variables\r",
-									"const expectedKeys = [\"status\", \"result\"];\r",
-									"const first_user_id = pm.variables.get(\"first_user_id\");\r",
-									"const offset = pm.variables.get(\"offset\");\r",
-									"const count = pm.variables.get(\"count\");\r",
-									"\r",
-									"// response variables from json if exist\r",
-									"var jsonData = Object();\r",
-									"var have_json;\r",
-									"pm.test(\"Response to have JSON-schema\", function() {\r",
-									"    try {\r",
-									"        jsonData = pm.response.json();\r",
-									"        have_json = true;\r",
-									"    }\r",
-									"    catch {\r",
-									"        have_json = false;\r",
-									"    };\r",
-									"    pm.expect(have_json).is.equal(true);\r",
-									"});\r",
-									"// postman does not contain normal methods for stopping all tests :(\r",
-									"if (have_json == false) {\r",
-									"    return;\r",
-									"};\r",
-									"\r",
-									"var correct_keys = Boolean();\r",
-									"pm.test(\"All keys is correct\", function() {\r",
-									"    const actualKeys = Object.keys(jsonData);\r",
-									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
-									"});\r",
-									"// postman does not contain normal methods for stopping all tests :(\r",
-									"if (correct_keys == false) {\r",
-									"    return;\r",
-									"};\r",
-									"\r",
-									"const users = jsonData[expectedKeys[1]];\r",
-									"var ids = [];\r",
-									"for (i in users) {\r",
-									"    ids.push(users[i].id);\r",
-									"};\r",
-									"\r",
-									"pm.test(\"json.status is OK\", function() {\r",
-									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct offset\", function() {\r",
-									"    var current_id = jsonData.result[0].id\r",
-									"    pm.expect(current_id - first_user_id).is.equal(pm.variables.get(\"offset\"));\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Results is sorted by id ascending\", function() {\r",
-									"    var sorted_ids = [...ids].sort();\r",
-									"    pm.expect(JSON.stringify(ids)).is.equal(JSON.stringify(sorted_ids));\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Type of result.id is string\", function() {\r",
-									"    goodType = \"string\";\r",
-									"    for (i in users) {\r",
-									"        if (typeof(users[i].id) != \"string\") {\r",
-									"            goodType = typeof(users[i].id);\r",
-									"        };\r",
-									"    };\r",
-									"    pm.expect(goodType).is.equal(\"string\");    \r",
-									"});\r",
-									"\r",
-									"pm.test(\"Type of result.name is string\", function() {\r",
-									"    goodType = \"string\";\r",
-									"    for (i in users) {\r",
-									"        if (typeof(users[i].name) != \"string\") {\r",
-									"            goodType = typeof(users[i].id);\r",
-									"        };\r",
-									"    };\r",
-									"    pm.expect(goodType).is.equal(\"string\");    \r",
-									"});"
-								],
-								"type": "text/javascript"
+									"pm.environment.set(\"jsonData\", null);"
+								]
 							}
 						},
 						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"pm.variables.set(\"offset\", 5);\r",
-									"\r",
-									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
-									"pm.sendRequest({\r",
-									"    url: url,\r",
-									"    method: 'GET',\r",
-									"}, function (err, res) {\r",
-									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}?offset={{offset}}",
-							"host": [
-								"{{host}}"
-							],
-							"port": "{{port}}",
-							"query": [
-								{
-									"key": "offset",
-									"value": "{{offset}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "correct get method",
-					"event": [
-						{
 							"listen": "test",
 							"script": {
+								"type": "text/javascript",
 								"exec": [
-									"// request variables\r",
-									"const expectedKeys = [\"status\", \"result\"];\r",
-									"const first_user_id = pm.variables.get(\"first_user_id\");\r",
-									"\r",
-									"// response variables\r",
-									"// response variables from json if exist\r",
-									"var jsonData = Object();\r",
-									"var have_json;\r",
-									"pm.test(\"Response to have JSON-schema\", function() {\r",
-									"    try {\r",
-									"        jsonData = pm.response.json();\r",
-									"        have_json = true;\r",
-									"    }\r",
-									"    catch {\r",
-									"        have_json = false;\r",
-									"    };\r",
-									"    pm.expect(have_json).is.equal(true);\r",
-									"});\r",
-									"// postman does not contain normal methods for stopping all tests :(\r",
-									"if (have_json == false) {\r",
-									"    return;\r",
-									"};\r",
-									"var correct_keys = Boolean();\r",
-									"pm.test(\"All keys is correct\", function() {\r",
-									"    const actualKeys = Object.keys(jsonData);\r",
-									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
-									"});\r",
-									"// postman does not contain normal methods for stopping all tests :(\r",
-									"if (correct_keys == false) {\r",
-									"    return;\r",
-									"};\r",
-									"const users = jsonData[expectedKeys[1]];\r",
-									"var ids = [];\r",
-									"for (i in users) {\r",
-									"    ids.push(users[i].id);\r",
-									"};\r",
-									"\r",
-									"pm.test(\"json.status is OK\", function() {\r",
-									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct user id in result\", function() {\r",
-									"    pm.expect(users.id).is.equal(pm.variables.get(\"id\"));\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Count of users is one\", function() {\r",
-									"    pm.expect(ids.length).is.equal(1);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Type of user.id is string\", function() {\r",
-									"    pm.expect(typeof(users.id)).is.equal(\"string\");    \r",
-									"});\r",
-									"\r",
-									"pm.test(\"Type of result.name is string\", function() {\r",
-									"    pm.expect(typeof(users.name)).is.equal(\"string\");    \r",
-									"});\r",
+									"// check json-data",
+									"var jsonData = pm.environment.get(\"jsonData\");",
+									"if (jsonData == null) {",
+									"    return;",
+									"};",
+									"",
+									"// check keys",
+									"const expectedKeys = [\"status\"];",
+									"const actualKeys = Object.keys(jsonData);",
+									"",
+									"pm.test(\"Все ключи правильные\", function() {",
+									"    pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));",
+									"});",
+									"",
+									"if (JSON.stringify(actualKeys) == JSON.stringify(expectedKeys)) {",
+									"    pm.variables.set(\"all_keys_is_correct\", true);",
+									"}",
+									"else {",
+									"    pm.variables.set(\"all_keys_is_correct\", false);",
+									"    return;",
+									"};",
 									""
-								],
-								"type": "text/javascript"
+								]
 							}
+						}
+					]
+				},
+				{
+					"name": "/index",
+					"item": [
+						{
+							"name": "\"GET /index\" с корректными параметрами \"count\", \"offset\"",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.variables.set(\"offset\", 1);\r",
+											"pm.variables.set(\"count\", 2);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/index?offset={{offset}}&count={{count}}",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"index"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "{{offset}}"
+										},
+										{
+											"key": "count",
+											"value": "{{count}}"
+										}
+									]
+								}
+							},
+							"response": []
 						},
+						{
+							"name": "\"GET /index\" с корректным параметром \"count\", offset=0 по-умолчанию",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.variables.set(\"offset\", 0); // by default\r",
+											"pm.variables.set(\"count\", 2);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/index?count={{count}}",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"index"
+									],
+									"query": [
+										{
+											"key": "count",
+											"value": "{{count}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /index\" с корректными параметром \"offset\" - возвращается все с указанного смещения",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.variables.set(\"offset\", 1);\r",
+											"pm.variables.set(\"count\", 2);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/index?offset={{offset}}",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"index"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "{{offset}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /index\" с корректными параметрами \"count\", \"offset\" и дополнительным параметром - дополнительный параметр игнорируется",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.variables.set(\"offset\", 1);\r",
+											"pm.variables.set(\"count\", 2);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/index?offset={{offset}}&count={{count}}&add=10",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"index"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "{{offset}}"
+										},
+										{
+											"key": "count",
+											"value": "{{count}}"
+										},
+										{
+											"key": "add",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
+								"type": "text/javascript",
 								"exec": [
-									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
-									"pm.sendRequest({\r",
-									"    url: url,\r",
-									"    method: 'GET',\r",
-									"}, function (err, res) {\r",
-									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
-									"    pm.variables.set(\"id\", res.json().result[0].id + 2);\r",
-									"});\r",
+									"pm.sendRequest({",
+									"    url: pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\"),",
+									"    method: 'GET',",
+									"}, function (err, res) {",
+									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// check json-data",
+									"var jsonData = pm.environment.get(\"jsonData\");",
+									"if (jsonData == null) {",
+									"    return;",
+									"};",
+									"",
+									"// check keys",
+									"const expectedKeys = [\"status\", \"result\"];",
+									"const actualKeys = Object.keys(jsonData);",
+									"",
+									"pm.test(\"Все ключи правильные\", function() {",
+									"    pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));",
+									"});",
+									"",
+									"if (JSON.stringify(actualKeys) == JSON.stringify(expectedKeys)) {",
+									"    pm.variables.set(\"all_keys_is_correct\", true);",
+									"}",
+									"else {",
+									"    pm.variables.set(\"all_keys_is_correct\", false);",
+									"    return;",
+									"};",
+									"",
+									"const offset = pm.variables.get(\"offset\");",
+									"const count = pm.variables.get(\"count\");",
+									"const users = jsonData.result;",
+									"",
+									"var ids = [];",
+									"for (i in users) {",
+									"    ids.push(users[i].id);",
+									"};",
+									"",
+									"pm.test(\"Результаты отсортированы по ID по возрастанию\", function() {",
+									"    var sorted_ids = [...ids].sort();",
+									"    pm.expect(JSON.stringify(sorted_ids)).is.equal(JSON.stringify(ids));",
+									"});",
+									"",
+									"pm.test(\"Тип result.id - строка\", function() {",
+									"    goodType = \"string\";",
+									"    for (i in users) {",
+									"        if (typeof(users[i].id) != \"string\") {",
+									"            goodType = typeof(users[i].id);",
+									"        };",
+									"    };",
+									"    pm.expect(goodType).is.equal(\"string\");    ",
+									"});",
+									"",
+									"pm.test(\"Тип result.name - строка\", function() {",
+									"    goodType = \"string\";",
+									"    for (i in users) {",
+									"        if (typeof(users[i].name) != \"string\") {",
+									"            goodType = typeof(users[i].id);",
+									"        };",
+									"    };",
+									"    pm.expect(goodType).is.equal(\"string\");    ",
+									"});",
+									"",
+									"pm.test(\"Корректное смещение\", function() {",
+									"    var current_id = jsonData.result[0].id",
+									"    pm.expect(current_id - pm.variables.get(\"first_user_id\")).is.equal(offset);",
+									"});",
+									"",
+									"pm.test(\"Корректное количество результатов\", function() {",
+									"    pm.expect(ids.length).is.equal(count);",
+									"});",
 									""
-								],
-								"type": "text/javascript"
+								]
 							}
 						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}/get?id={{id}}",
-							"host": [
-								"{{host}}"
-							],
-							"port": "{{port}}",
-							"path": [
-								"get"
-							],
-							"query": [
+					]
+				},
+				{
+					"name": "/get",
+					"item": [
+						{
+							"name": "\"GET /get\" с начальным параметром \"id\"",
+							"event": [
 								{
-									"key": "id",
-									"value": "{{id}}"
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({\r",
+											"    url: pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\"),\r",
+											"    method: 'GET',\r",
+											"}, function (err, res) {\r",
+											"    pm.variables.set(\"first_user_id\", res.json().result[0].id.toString());\r",
+											"    pm.variables.set(\"id\", res.json().result[0].id);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
 								}
-							]
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get?id={{id}}",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /get\" с id больше на 1, чем начальное id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// request variables\r",
+											"const expectedKeys = [\"status\", \"result\"];\r",
+											"const first_user_id = pm.variables.get(\"first_user_id\");\r",
+											"\r",
+											"// response variables\r",
+											"// response variables from json if exist\r",
+											"var jsonData = Object();\r",
+											"var have_json;\r",
+											"pm.test(\"Response to have JSON-schema\", function() {\r",
+											"    try {\r",
+											"        jsonData = pm.response.json();\r",
+											"        have_json = true;\r",
+											"    }\r",
+											"    catch {\r",
+											"        have_json = false;\r",
+											"    };\r",
+											"    pm.expect(have_json).is.equal(true);\r",
+											"});\r",
+											"// postman does not contain normal methods for stopping all tests :(\r",
+											"if (have_json == false) {\r",
+											"    return;\r",
+											"};\r",
+											"var correct_keys = Boolean();\r",
+											"pm.test(\"All keys is correct\", function() {\r",
+											"    const actualKeys = Object.keys(jsonData);\r",
+											"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
+											"});\r",
+											"// postman does not contain normal methods for stopping all tests :(\r",
+											"if (correct_keys == false) {\r",
+											"    return;\r",
+											"};\r",
+											"const users = jsonData[expectedKeys[1]];\r",
+											"var ids = [];\r",
+											"for (i in users) {\r",
+											"    ids.push(users[i].id);\r",
+											"};\r",
+											"\r",
+											"pm.test(\"json.status is OK\", function() {\r",
+											"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Correct user id in result\", function() {\r",
+											"    pm.expect(users.id).is.equal(pm.variables.get(\"id\"));\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Count of users is one\", function() {\r",
+											"    pm.expect(ids.length).is.equal(1);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Type of user.id is string\", function() {\r",
+											"    pm.expect(typeof(users.id)).is.equal(\"string\");    \r",
+											"});\r",
+											"\r",
+											"pm.test(\"Type of result.name is string\", function() {\r",
+											"    pm.expect(typeof(users.name)).is.equal(\"string\");    \r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
+											"pm.sendRequest({\r",
+											"    url: url,\r",
+											"    method: 'GET',\r",
+											"}, function (err, res) {\r",
+											"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
+											"    pm.variables.set(\"id\", res.json().result[0].id + 1);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get?id={{id}}",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /get\" с  параметром \"id\" и дополнительным параметром - дополнительный параметр игнорируется",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// request variables\r",
+											"const expectedKeys = [\"status\", \"result\"];\r",
+											"const first_user_id = pm.variables.get(\"first_user_id\");\r",
+											"\r",
+											"// response variables\r",
+											"// response variables from json if exist\r",
+											"var jsonData = Object();\r",
+											"var have_json;\r",
+											"pm.test(\"Response to have JSON-schema\", function() {\r",
+											"    try {\r",
+											"        jsonData = pm.response.json();\r",
+											"        have_json = true;\r",
+											"    }\r",
+											"    catch {\r",
+											"        have_json = false;\r",
+											"    };\r",
+											"    pm.expect(have_json).is.equal(true);\r",
+											"});\r",
+											"// postman does not contain normal methods for stopping all tests :(\r",
+											"if (have_json == false) {\r",
+											"    return;\r",
+											"};\r",
+											"var correct_keys = Boolean();\r",
+											"pm.test(\"All keys is correct\", function() {\r",
+											"    const actualKeys = Object.keys(jsonData);\r",
+											"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
+											"});\r",
+											"// postman does not contain normal methods for stopping all tests :(\r",
+											"if (correct_keys == false) {\r",
+											"    return;\r",
+											"};\r",
+											"const users = jsonData[expectedKeys[1]];\r",
+											"var ids = [];\r",
+											"for (i in users) {\r",
+											"    ids.push(users[i].id);\r",
+											"};\r",
+											"\r",
+											"pm.test(\"json.status is OK\", function() {\r",
+											"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Correct user id in result\", function() {\r",
+											"    pm.expect(users.id).is.equal(pm.variables.get(\"id\"));\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Count of users is one\", function() {\r",
+											"    pm.expect(ids.length).is.equal(1);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Type of user.id is string\", function() {\r",
+											"    pm.expect(typeof(users.id)).is.equal(\"string\");    \r",
+											"});\r",
+											"\r",
+											"pm.test(\"Type of result.name is string\", function() {\r",
+											"    pm.expect(typeof(users.name)).is.equal(\"string\");    \r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
+											"pm.sendRequest({\r",
+											"    url: url,\r",
+											"    method: 'GET',\r",
+											"}, function (err, res) {\r",
+											"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
+											"    pm.variables.set(\"id\", res.json().result[0].id + 2);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get?id={{id}}&add=10",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{id}}"
+										},
+										{
+											"key": "add",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// check json-data",
+									"var jsonData = pm.environment.get(\"jsonData\");",
+									"if (jsonData == null) {",
+									"    return;",
+									"};",
+									"",
+									"// check keys",
+									"const expectedKeys = [\"status\", \"reslut\"];",
+									"const actualKeys = Object.keys(jsonData);",
+									"",
+									"pm.test(\"Все ключи правильные\", function() {",
+									"    pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));",
+									"});",
+									"",
+									"if (JSON.stringify(actualKeys) == JSON.stringify(expectedKeys)) {",
+									"    pm.variables.set(\"all_keys_is_correct\", true);",
+									"}",
+									"else {",
+									"    pm.variables.set(\"all_keys_is_correct\", false);",
+									"    return;",
+									"};",
+									"",
+									"const offset = pm.variables.get(\"offset\");",
+									"const users = jsonData.reslut;",
+									"",
+									"pm.test(\"Тип result.id - строка\", function() {",
+									"    goodType = \"string\";",
+									"    if (typeof(users.id) != \"string\") {",
+									"            goodType = typeof(users[i].id);",
+									"        };",
+									"    pm.expect(goodType).is.equal(\"string\");    ",
+									"});",
+									"",
+									"pm.test(\"Тип result.name - строка\", function() {",
+									"    goodType = \"string\";",
+									"    if (typeof(users.name) != \"string\") {",
+									"            goodType = typeof(users[i].id);",
+									"    };",
+									"    pm.expect(goodType).is.equal(\"string\");    ",
+									"});",
+									""
+								]
+							}
+						}
+					]
 				}
 			],
 			"event": [
@@ -564,7 +797,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							""
+							"pm.environment.set(\"jsonData\", null);"
 						]
 					}
 				},
@@ -573,24 +806,13 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"pm.test(\"Status code is 200\", function() {",
-							"    pm.expect(pm.response).to.have.status(200);",
-							"});",
+							"var jsonData = pm.environment.get(\"jsonData\");",
+							"if (jsonData == null) {",
+							"    return;",
+							"};",
 							"",
-							"pm.test(\"Time to response lower than 500 ms\", function() {",
-							"    pm.expect(pm.response.responseTime).to.be.below(500);",
-							"});",
-							"",
-							"pm.test(\"Response to have body\", function() {",
-							"    pm.expect(pm.response.to.have.body());",
-							"});",
-							"",
-							"pm.test(\"Response to have content-type in header\", function() {",
-							"    pm.expect(pm.response.to.have.header(\"Content-Type\"));",
-							"});",
-							"",
-							"pm.test(\"Response to have correct content type application/json\", function() {",
-							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"pm.test(\"Тело ответа содержит ключ 'status' со значением 'OK'\", function() {",
+							"    pm.expect(jsonData.status).is.equal(\"OK\");",
 							"});"
 						]
 					}
@@ -598,432 +820,1371 @@
 			]
 		},
 		{
-			"name": "negative_tests (404)",
+			"name": "negative_tests (status - 200/error)",
 			"item": [
 				{
-					"name": "incorrect name of the reset method",
-					"event": [
+					"name": "empty methods",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}/reset_reset",
-							"host": [
-								"{{host}}"
+							"name": "\"GET\" (только http-метод)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
 							],
-							"port": "{{port}}",
-							"path": [
-								"reset_reset"
-							]
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"POST\" (только http-метод)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"PUT\" (только http-метод)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"DELETE\" (только http-метод)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "incorrect name of the index method",
-					"event": [
+					"name": "/reset",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
+							"name": "\"GET /Reset\" (некорректное имя)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/Reset",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"Reset"
+									]
+								}
+							},
+							"response": []
 						},
+						{
+							"name": "\"GET /reset00\" (некорректное имя с цифрами)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/reset00",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"reset00"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"PUT /reset\" (некорректный метод)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/reset",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"reset"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"POST /reset\" (некорректный метод)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/reset",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"reset"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"POST /reset\" (некорректный метод) Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/reset",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"reset"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
+								"type": "text/javascript",
 								"exec": [
-									"pm.variables.set(\"offset\", 1);\r",
-									"pm.variables.set(\"count\", 2);\r",
-									"\r",
-									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
-									"pm.sendRequest({\r",
-									"    url: url,\r",
-									"    method: 'GET',\r",
-									"}, function (err, res) {\r",
-									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
-									"});"
-								],
-								"type": "text/javascript"
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
 							}
 						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}/index_index?offset={{offset}}&count={{count}}",
-							"host": [
-								"{{host}}"
-							],
-							"port": "{{port}}",
-							"path": [
-								"index_index"
-							],
-							"query": [
+					]
+				},
+				{
+					"name": "/index",
+					"item": [
+						{
+							"name": "\"PUT /index?offset=1&count=1\" (некорректный метод)",
+							"event": [
 								{
-									"key": "offset",
-									"value": "{{offset}}"
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/index?offset=1&count=1",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"index"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "1"
+										},
+										{
+											"key": "count",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"POST /index?offset=1&count=1\" (некорректный метод)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/index?offset=1&count=1",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"index"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "1"
+										},
+										{
+											"key": "count",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"DEL /index?offset=1&count=1\" (некорректный метод)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/index?offset=1&count=1",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"index"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "1"
+										},
+										{
+											"key": "count",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /Index\" (некорректное имя)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/Index",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"Index"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /inDex\" некорректное имя с корректным параметром \"count\"",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
 								},
 								{
-									"key": "count",
-									"value": "{{count}}"
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
 								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "incorrect name of the get method",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/indeX?count=1",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"indeX"
+									],
+									"query": [
+										{
+											"key": "count",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
 						},
 						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
-									"pm.sendRequest({\r",
-									"    url: url,\r",
-									"    method: 'GET',\r",
-									"}, function (err, res) {\r",
-									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
-									"    pm.variables.set(\"id\", res.json().result[0].id + 2);\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}/get_get?id={{id}}",
-							"host": [
-								"{{host}}"
-							],
-							"port": "{{port}}",
-							"path": [
-								"get_get"
-							],
-							"query": [
+							"name": "\"GET /Index\" некорректное имя с корректными параметрами \"count\", \"offset\"",
+							"event": [
 								{
-									"key": "id",
-									"value": "{{id}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "correct index method with big offset",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"pm.variables.set(\"offset\", pm.variables.get(\"big\"));\r",
-									"pm.variables.set(\"count\", 2);\r",
-									"\r",
-									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
-									"pm.sendRequest({\r",
-									"    url: url,\r",
-									"    method: 'GET',\r",
-									"}, function (err, res) {\r",
-									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}/index?offset={{offset}}&count={{count}}",
-							"host": [
-								"{{host}}"
-							],
-							"port": "{{port}}",
-							"path": [
-								"index"
-							],
-							"query": [
-								{
-									"key": "offset",
-									"value": "{{offset}}"
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
 								},
 								{
-									"key": "count",
-									"value": "{{count}}"
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
 								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "correct index method with text in offset",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/Index?offset=1&count=1",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"Index"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "1"
+										},
+										{
+											"key": "count",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
 						},
 						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"pm.variables.set(\"offset\", \"text\");\r",
-									"pm.variables.set(\"count\", 2);\r",
-									"\r",
-									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
-									"pm.sendRequest({\r",
-									"    url: url,\r",
-									"    method: 'GET',\r",
-									"}, function (err, res) {\r",
-									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}/index_index?offset={{offset}}&count={{count}}",
-							"host": [
-								"{{host}}"
-							],
-							"port": "{{port}}",
-							"path": [
-								"index_index"
-							],
-							"query": [
+							"name": "\"GET /indeX\" некорректное имя с корректным параметром \"offset\"",
+							"event": [
 								{
-									"key": "offset",
-									"value": "{{offset}}"
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
 								},
 								{
-									"key": "count",
-									"value": "{{count}}"
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
 								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "correct index method with text in count",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/indeX?offset=1",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"indeX"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
 						},
 						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"pm.variables.set(\"offset\", 0);\r",
-									"pm.variables.set(\"count\", \"text\");\r",
-									"\r",
-									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
-									"pm.sendRequest({\r",
-									"    url: url,\r",
-									"    method: 'GET',\r",
-									"}, function (err, res) {\r",
-									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}/index_index?offset={{offset}}&count={{count}}",
-							"host": [
-								"{{host}}"
-							],
-							"port": "{{port}}",
-							"path": [
-								"index_index"
-							],
-							"query": [
-								{
-									"key": "offset",
-									"value": "{{offset}}"
-								},
-								{
-									"key": "count",
-									"value": "{{count}}"
+							"name": "\"GET /index?offset=text&count=1\" текст в offset",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/index?offset=text&count=1",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"index"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "text"
+										},
+										{
+											"key": "count",
+											"value": "1"
+										}
+									]
 								}
-							]
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /index?offset=1&count=text\" техт в count",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/index?offset=1&count=text",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"index"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "1"
+										},
+										{
+											"key": "count",
+											"value": "text"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /index?offset=?&count=1\" символ ? в offset",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/index?offset=?&count=1",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"index"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "?"
+										},
+										{
+											"key": "count",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /index?offset=1&count=?\" символ ? в count",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/index?offset=1&count=?",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"index"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "1"
+										},
+										{
+											"key": "count",
+											"value": "?"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /index?offset=&&count=&\" символ & в offset, count",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/index?offset=&&count=&",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"index"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": ""
+										},
+										{
+											"key": null,
+											"value": null
+										},
+										{
+											"key": "count",
+											"value": ""
+										},
+										{
+											"key": "",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /index?offset=-1&count=1\" отрицательный offset",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/index?offset=-1&count=1",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"index"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "-1"
+										},
+										{
+											"key": "count",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /index?offset=0&count=-1\" отрицательный count",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/index?offset=0&count=-1",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"index"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "0"
+										},
+										{
+											"key": "count",
+											"value": "-1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /index?offset=0&count=0\" оба параметра =0",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/index?offset=0&count=0",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"index"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "0"
+										},
+										{
+											"key": "count",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "get method without params",
-					"event": [
+					"name": "/get",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}/get",
-							"host": [
-								"{{host}}"
-							],
-							"port": "{{port}}",
-							"path": [
-								"get"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get method with absent id (less than exist)",
-					"event": [
+							"name": "\"GET /get\" без параметров",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get"
+									]
+								}
+							},
+							"response": []
+						},
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}/get&id={{small}}",
-							"host": [
-								"{{host}}"
+							"name": "\"GET /get?ID\" (метод в верхнем регистре)",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({\r",
+											"    url: pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\"),\r",
+											"    method: 'GET',\r",
+											"}, function (err, res) {\r",
+											"    pm.variables.set(\"first_user_id\", res.json().result[0].id.toString());\r",
+											"    pm.variables.set(\"id\", res.json().result[0].id);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
 							],
-							"port": "{{port}}",
-							"path": [
-								"get&id={{small}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get method with absent id (more than exist)",
-					"event": [
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get?ID={{id}}",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get"
+									],
+									"query": [
+										{
+											"key": "ID",
+											"value": "{{id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}/get&id={{big}}",
-							"host": [
-								"{{host}}"
-							],
-							"port": "{{port}}",
-							"path": [
-								"get&id={{big}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get method with text in id param",
-					"event": [
+							"name": "\"GET /get\" с пустым id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get&id=\"\"",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get&id=\"\""
+									]
+								}
+							},
+							"response": []
+						},
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}/get&id=\"text\"",
-							"host": [
-								"{{host}}"
+							"name": "\"GET /get\" с id больше максимального",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get&id=1000000000000000000",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get&id=1000000000000000000"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /get?id=0\"",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get&id=0",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get&id=0"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /get?id=-1\" (отрицательное)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get&id=-1",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get&id=-1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /get\" с id меньше на 1, чем начальное id",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({\r",
+											"    url: pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\"),\r",
+											"    method: 'GET',\r",
+											"}, function (err, res) {\r",
+											"    pm.variables.set(\"first_user_id\", res.json().result[0].id.toString());\r",
+											"    pm.variables.set(\"id\", res.json().result[0].id - 1);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
 							],
-							"port": "{{port}}",
-							"path": [
-								"get&id=\"text\""
-							]
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get?id={{id}}",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /get?id=text\" (строка)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get?id=text",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "text"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /get?id=?\" (символ ?)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get?id=?",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "?"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /get?id=&\" (символ &)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get?id=&",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": ""
+										},
+										{
+											"key": "",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /get?id==\" (символ =)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get?id==",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "="
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /get\" с id=\" \" (символ)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get?id=\" \"",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "\" \""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /get?id=null\"",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get?id=null",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "null"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /get?id=true\"",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get?id=true",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /Get\" (некорректное имя) с корректным параметром \"id\"",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({\r",
+											"    url: pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\"),\r",
+											"    method: 'GET',\r",
+											"}, function (err, res) {\r",
+											"    pm.variables.set(\"first_user_id\", res.json().result[0].id.toString());\r",
+											"    pm.variables.set(\"id\", res.json().result[0].id);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/Get?id={{id}}",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"Get"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"GET /GET\" (некорректное имя) с корректным параметром \"id\"",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({\r",
+											"    url: pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\"),\r",
+											"    method: 'GET',\r",
+											"}, function (err, res) {\r",
+											"    pm.variables.set(\"first_user_id\", res.json().result[0].id.toString());\r",
+											"    pm.variables.set(\"id\", res.json().result[0].id);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/GET?id={{id}}",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"GET"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"PUT /get\" (некорректнsq vtnjl) с корректным параметром \"id\"",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({\r",
+											"    url: pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\"),\r",
+											"    method: 'GET',\r",
+											"}, function (err, res) {\r",
+											"    pm.variables.set(\"first_user_id\", res.json().result[0].id.toString());\r",
+											"    pm.variables.set(\"id\", res.json().result[0].id);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get?id={{id}}",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"POST /get\" (некорректнsq vtnjl) с корректным параметром \"id\"",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({\r",
+											"    url: pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\"),\r",
+											"    method: 'GET',\r",
+											"}, function (err, res) {\r",
+											"    pm.variables.set(\"first_user_id\", res.json().result[0].id.toString());\r",
+											"    pm.variables.set(\"id\", res.json().result[0].id);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get?id={{id}}",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "\"DELETE /get\" (некорректнsq vtnjl) с корректным параметром \"id\"",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({\r",
+											"    url: pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\"),\r",
+											"    method: 'GET',\r",
+											"}, function (err, res) {\r",
+											"    pm.variables.set(\"first_user_id\", res.json().result[0].id.toString());\r",
+											"    pm.variables.set(\"id\", res.json().result[0].id);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port}}/get?id={{id}}",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"get"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{id}}"
+										}
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				}
 			],
 			"description": "The behavior for this group of tests is not defined in the API description",
@@ -1033,7 +2194,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							""
+							"pm.environment.set(\"jsonData\", null);"
 						]
 					}
 				},
@@ -1042,830 +2203,78 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"pm.test(\"Status code is 404\", function() {",
-							"    pm.expect(pm.response).to.have.status(404);",
-							"});",
+							"var jsonData = pm.environment.get(\"jsonData\");",
+							"if (jsonData == null) {",
+							"    return;",
+							"};",
 							"",
-							"pm.test(\"Time to response lower than 500 ms\", function() {",
-							"    pm.expect(pm.response.responseTime).to.be.below(500);",
-							"});",
-							"",
-							"pm.test(\"Response to have body\", function() {",
-							"    pm.expect(pm.response.to.have.body());",
-							"});",
-							"",
-							"pm.test(\"Response to have content-type in header\", function() {",
-							"    pm.expect(pm.response.to.have.header(\"Content-Type\"));",
-							"});",
-							"",
-							"pm.test(\"Response to have correct content type text/html; charset=utf-8\", function() {",
-							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/html; charset=utf-8\");",
+							"pm.test(\"Тело ответа содержит ключ 'status' со значением 'error'\", function() {",
+							"    pm.expect(pm.environment.get(\"jsonData\").status).is.equal(\"error\");",
 							"});"
 						]
 					}
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		},
 		{
-			"name": "negative_tests (200)",
-			"item": [
-				{
-					"name": "have not method (only OK)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// request variables\r",
-									"const expectedKeys = [\"status\", \"results\"];\r",
-									"\r",
-									"// response variables from json if exist\r",
-									"var jsonData = Object();\r",
-									"var have_json;\r",
-									"pm.test(\"Response to have JSON-schema\", function() {\r",
-									"    try {\r",
-									"        jsonData = pm.response.json();\r",
-									"        have_json = true;\r",
-									"    }\r",
-									"    catch {\r",
-									"        have_json = false;\r",
-									"    };\r",
-									"    pm.expect(have_json).is.equal(true);\r",
-									"});\r",
-									"// postman does not contain normal methods for stopping all tests :(\r",
-									"if (have_json == false) {\r",
-									"    return;\r",
-									"};\r",
-									"var correct_keys = Boolean();\r",
-									"pm.test(\"All keys is correct\", function() {\r",
-									"    const actualKeys = Object.keys(jsonData);\r",
-									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
-									"});\r",
-									"// postman does not contain normal methods for stopping all tests :(\r",
-									"if (correct_keys == false) {\r",
-									"    return;\r",
-									"};\r",
-									"\r",
-									"pm.test(\"json.status is OK\", function() {\r",
-									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}",
-							"host": [
-								"{{host}}"
-							],
-							"port": "{{port}}"
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "correct reset method + adding params (ignore)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// request variables\r",
-									"const expectedKeys = [\"status\"];\r",
-									"\r",
-									"// response variables from json if exist\r",
-									"var jsonData = Object();\r",
-									"var have_json;\r",
-									"pm.test(\"Response to have JSON-schema\", function() {\r",
-									"    try {\r",
-									"        jsonData = pm.response.json();\r",
-									"        have_json = true;\r",
-									"    }\r",
-									"    catch {\r",
-									"        have_json = false;\r",
-									"    };\r",
-									"    pm.expect(have_json).is.equal(true);\r",
-									"});\r",
-									"// postman does not contain normal methods for stopping all tests :(\r",
-									"if (have_json == false) {\r",
-									"    return;\r",
-									"};\r",
-									"var correct_keys = Boolean();\r",
-									"pm.test(\"All keys is correct\", function() {\r",
-									"    const actualKeys = Object.keys(jsonData);\r",
-									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
-									"});\r",
-									"// postman does not contain normal methods for stopping all tests :(\r",
-									"if (correct_keys == false) {\r",
-									"    return;\r",
-									"};\r",
-									"\r",
-									"pm.test(\"json.status is OK\", function() {\r",
-									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}/reset&id=10",
-							"host": [
-								"{{host}}"
-							],
-							"port": "{{port}}",
-							"path": [
-								"reset&id=10"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "index method without params (get all)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// request variables\r",
-									"const expectedKeys = [\"status\", \"result\"];\r",
-									"const first_user_id = pm.variables.get(\"first_user_id\");\r",
-									"const offset = pm.variables.get(\"offset\");\r",
-									"const count = pm.variables.get(\"count\");\r",
-									"\r",
-									"// response variables from json if exist\r",
-									"var jsonData = Object();\r",
-									"var have_json;\r",
-									"pm.test(\"Response to have JSON-schema\", function() {\r",
-									"    try {\r",
-									"        jsonData = pm.response.json();\r",
-									"        have_json = true;\r",
-									"    }\r",
-									"    catch {\r",
-									"        have_json = false;\r",
-									"    };\r",
-									"    pm.expect(have_json).is.equal(true);\r",
-									"});\r",
-									"\r",
-									"if (have_json == false) {\r",
-									"    return;\r",
-									"};\r",
-									"\r",
-									"var correct_keys = Boolean();\r",
-									"pm.test(\"All keys is correct\", function() {\r",
-									"    const actualKeys = Object.keys(jsonData);\r",
-									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
-									"});\r",
-									"\r",
-									"if (correct_keys == false) {\r",
-									"    return;\r",
-									"};\r",
-									"\r",
-									"const users = jsonData[expectedKeys[1]];\r",
-									"var ids = [];\r",
-									"for (i in users) {\r",
-									"    ids.push(users[i].id);\r",
-									"};\r",
-									"\r",
-									"pm.test(\"json.status is OK\", function() {\r",
-									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct offset\", function() {\r",
-									"    var current_id = jsonData.result[0].id\r",
-									"    pm.expect(current_id - first_user_id).is.equal(offset);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct count of results\", function() {\r",
-									"    pm.expect(ids.length).is.equal(count);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Results is sorted by id ascending\", function() {\r",
-									"    var sorted_ids = [...ids].sort();\r",
-									"    pm.expect(JSON.stringify(sorted_ids)).is.equal(JSON.stringify(ids));\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Type of result.id is string\", function() {\r",
-									"    goodType = \"string\";\r",
-									"    for (i in users) {\r",
-									"        if (typeof(users[i].id) != \"string\") {\r",
-									"            goodType = typeof(users[i].id);\r",
-									"        };\r",
-									"    };\r",
-									"    pm.expect(goodType).is.equal(\"string\");    \r",
-									"});\r",
-									"\r",
-									"pm.test(\"Type of result.name is string\", function() {\r",
-									"    goodType = \"string\";\r",
-									"    for (i in users) {\r",
-									"        if (typeof(users[i].name) != \"string\") {\r",
-									"            goodType = typeof(users[i].id);\r",
-									"        };\r",
-									"    };\r",
-									"    pm.expect(goodType).is.equal(\"string\");    \r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"pm.variables.set(\"offset\", 0);\r",
-									"pm.variables.set(\"count\", 10);\r",
-									"\r",
-									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
-									"pm.sendRequest({\r",
-									"    url: url,\r",
-									"    method: 'GET',\r",
-									"}, function (err, res) {\r",
-									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}/index",
-							"host": [
-								"{{host}}"
-							],
-							"port": "{{port}}",
-							"path": [
-								"index"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "index method with big count (get all starts from offset)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// request variables\r",
-									"const expectedKeys = [\"status\", \"result\"];\r",
-									"const first_user_id = pm.variables.get(\"first_user_id\");\r",
-									"const offset = pm.variables.get(\"offset\");\r",
-									"const count = pm.variables.get(\"count\");\r",
-									"\r",
-									"// response variables from json if exist\r",
-									"var jsonData = Object();\r",
-									"var have_json;\r",
-									"pm.test(\"Response to have JSON-schema\", function() {\r",
-									"    try {\r",
-									"        jsonData = pm.response.json();\r",
-									"        have_json = true;\r",
-									"    }\r",
-									"    catch {\r",
-									"        have_json = false;\r",
-									"    };\r",
-									"    pm.expect(have_json).is.equal(true);\r",
-									"});\r",
-									"\r",
-									"if (have_json == false) {\r",
-									"    return;\r",
-									"};\r",
-									"\r",
-									"var correct_keys = Boolean();\r",
-									"pm.test(\"All keys is correct\", function() {\r",
-									"    const actualKeys = Object.keys(jsonData);\r",
-									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
-									"});\r",
-									"\r",
-									"if (correct_keys == false) {\r",
-									"    return;\r",
-									"};\r",
-									"\r",
-									"const users = jsonData[expectedKeys[1]];\r",
-									"var ids = [];\r",
-									"for (i in users) {\r",
-									"    ids.push(users[i].id);\r",
-									"};\r",
-									"\r",
-									"pm.test(\"json.status is OK\", function() {\r",
-									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct offset\", function() {\r",
-									"    var current_id = jsonData.result[0].id\r",
-									"    pm.expect(current_id - first_user_id).is.equal(offset);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct count of results\", function() {\r",
-									"    pm.expect(ids.length).is.equal(pm.environment.get(\"num_users\") - offset);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Results is sorted by id ascending\", function() {\r",
-									"    var sorted_ids = [...ids].sort();\r",
-									"    pm.expect(JSON.stringify(sorted_ids)).is.equal(JSON.stringify(ids));\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Type of result.id is string\", function() {\r",
-									"    goodType = \"string\";\r",
-									"    for (i in users) {\r",
-									"        if (typeof(users[i].id) != \"string\") {\r",
-									"            goodType = typeof(users[i].id);\r",
-									"        };\r",
-									"    };\r",
-									"    pm.expect(goodType).is.equal(\"string\");    \r",
-									"});\r",
-									"\r",
-									"pm.test(\"Type of result.name is string\", function() {\r",
-									"    goodType = \"string\";\r",
-									"    for (i in users) {\r",
-									"        if (typeof(users[i].name) != \"string\") {\r",
-									"            goodType = typeof(users[i].id);\r",
-									"        };\r",
-									"    };\r",
-									"    pm.expect(goodType).is.equal(\"string\");    \r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"pm.variables.set(\"offset\", 0);\r",
-									"pm.variables.set(\"count\", pm.environment.get(\"big\"));\r",
-									"\r",
-									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
-									"pm.sendRequest({\r",
-									"    url: url,\r",
-									"    method: 'GET',\r",
-									"}, function (err, res) {\r",
-									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}/index&offset={{offset}}&count={{count}}",
-							"host": [
-								"{{host}}"
-							],
-							"port": "{{port}}",
-							"path": [
-								"index&offset={{offset}}&count={{count}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "correct index method with offset and count + adding params (ignore)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// request variables\r",
-									"const expectedKeys = [\"status\", \"result\"];\r",
-									"const first_user_id = pm.variables.get(\"first_user_id\");\r",
-									"const offset = pm.variables.get(\"offset\");\r",
-									"const count = pm.variables.get(\"count\");\r",
-									"\r",
-									"// response variables from json if exist\r",
-									"var jsonData = Object();\r",
-									"var have_json;\r",
-									"pm.test(\"Response to have JSON-schema\", function() {\r",
-									"    try {\r",
-									"        jsonData = pm.response.json();\r",
-									"        have_json = true;\r",
-									"    }\r",
-									"    catch {\r",
-									"        have_json = false;\r",
-									"    };\r",
-									"    pm.expect(have_json).is.equal(true);\r",
-									"});\r",
-									"\r",
-									"if (have_json == false) {\r",
-									"    return;\r",
-									"};\r",
-									"\r",
-									"var correct_keys = Boolean();\r",
-									"pm.test(\"All keys is correct\", function() {\r",
-									"    const actualKeys = Object.keys(jsonData);\r",
-									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
-									"});\r",
-									"\r",
-									"if (correct_keys == false) {\r",
-									"    return;\r",
-									"};\r",
-									"\r",
-									"const users = jsonData[expectedKeys[1]];\r",
-									"var ids = [];\r",
-									"for (i in users) {\r",
-									"    ids.push(users[i].id);\r",
-									"};\r",
-									"\r",
-									"pm.test(\"json.status is OK\", function() {\r",
-									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct offset\", function() {\r",
-									"    var current_id = jsonData.result[0].id\r",
-									"    pm.expect(current_id - first_user_id).is.equal(pm.variables.get(\"offset\"));\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct count of results\", function() {\r",
-									"    pm.expect(ids.length).is.equal(count);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Results is sorted by id ascending\", function() {\r",
-									"    var sorted_ids = [...ids].sort();\r",
-									"    pm.expect(JSON.stringify(sorted_ids)).is.equal(JSON.stringify(ids));\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Type of result.id is string\", function() {\r",
-									"    goodType = \"string\";\r",
-									"    for (i in users) {\r",
-									"        if (typeof(users[i].id) != \"string\") {\r",
-									"            goodType = typeof(users[i].id);\r",
-									"        };\r",
-									"    };\r",
-									"    pm.expect(goodType).is.equal(\"string\");    \r",
-									"});\r",
-									"\r",
-									"pm.test(\"Type of result.name is string\", function() {\r",
-									"    goodType = \"string\";\r",
-									"    for (i in users) {\r",
-									"        if (typeof(users[i].name) != \"string\") {\r",
-									"            goodType = typeof(users[i].id);\r",
-									"        };\r",
-									"    };\r",
-									"    pm.expect(goodType).is.equal(\"string\");    \r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"pm.variables.set(\"offset\", 1);\r",
-									"pm.variables.set(\"count\", 2);\r",
-									"\r",
-									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
-									"pm.sendRequest({\r",
-									"    url: url,\r",
-									"    method: 'GET',\r",
-									"}, function (err, res) {\r",
-									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}/index?offset={{offset}}&count={{count}}&any_param=1",
-							"host": [
-								"{{host}}"
-							],
-							"port": "{{port}}",
-							"path": [
-								"index"
-							],
-							"query": [
-								{
-									"key": "offset",
-									"value": "{{offset}}"
-								},
-								{
-									"key": "count",
-									"value": "{{count}}"
-								},
-								{
-									"key": "any_param",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "correct index method with count + adding params (ignore)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// request variables\r",
-									"const expectedKeys = [\"status\", \"result\"];\r",
-									"const first_user_id = pm.variables.get(\"first_user_id\");\r",
-									"const offset = pm.variables.get(\"offset\");\r",
-									"const count = pm.variables.get(\"count\");\r",
-									"\r",
-									"// response variables from json if exist\r",
-									"var jsonData = Object();\r",
-									"var have_json;\r",
-									"pm.test(\"Response to have JSON-schema\", function() {\r",
-									"    try {\r",
-									"        jsonData = pm.response.json();\r",
-									"        have_json = true;\r",
-									"    }\r",
-									"    catch {\r",
-									"        have_json = false;\r",
-									"    };\r",
-									"    pm.expect(have_json).is.equal(true);\r",
-									"});\r",
-									"// postman does not contain normal methods for stopping all tests :(\r",
-									"if (have_json == false) {\r",
-									"    return;\r",
-									"};\r",
-									"var correct_keys = Boolean();\r",
-									"pm.test(\"All keys is correct\", function() {\r",
-									"    const actualKeys = Object.keys(jsonData);\r",
-									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
-									"});\r",
-									"// postman does not contain normal methods for stopping all tests :(\r",
-									"if (correct_keys == false) {\r",
-									"    return;\r",
-									"};\r",
-									"const users = jsonData[expectedKeys[1]];\r",
-									"var ids = [];\r",
-									"for (i in users) {\r",
-									"    ids.push(users[i].id);\r",
-									"};\r",
-									"\r",
-									"pm.test(\"json.status is OK\", function() {\r",
-									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Offset is equal zero\", function() {\r",
-									"    var current_id = jsonData.result[0].id\r",
-									"    pm.expect(current_id - first_user_id).is.equal(0);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct count of results\", function() {\r",
-									"    pm.expect(count).is.equal(ids.length);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Results is sorted by id ascending\", function() {\r",
-									"    var sorted_ids = [...ids].sort();\r",
-									"    pm.expect(JSON.stringify(ids)).is.equal(JSON.stringify(sorted_ids));\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Type of result.id is string\", function() {\r",
-									"    goodType = \"string\";\r",
-									"    for (i in users) {\r",
-									"        if (typeof(users[i].id) != \"string\") {\r",
-									"            goodType = typeof(users[i].id);\r",
-									"        };\r",
-									"    };\r",
-									"    pm.expect(goodType).is.equal(\"string\");    \r",
-									"});\r",
-									"\r",
-									"pm.test(\"Type of result.name is string\", function() {\r",
-									"    goodType = \"string\";\r",
-									"    for (i in users) {\r",
-									"        if (typeof(users[i].name) != \"string\") {\r",
-									"            goodType = typeof(users[i].id);\r",
-									"        };\r",
-									"    };\r",
-									"    pm.expect(goodType).is.equal(\"string\");    \r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"pm.variables.set(\"count\", 2);\r",
-									"\r",
-									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
-									"pm.sendRequest({\r",
-									"    url: url,\r",
-									"    method: 'GET',\r",
-									"}, function (err, res) {\r",
-									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}/index?count={{count}}&any_param=1",
-							"host": [
-								"{{host}}"
-							],
-							"port": "{{port}}",
-							"path": [
-								"index"
-							],
-							"query": [
-								{
-									"key": "count",
-									"value": "{{count}}"
-								},
-								{
-									"key": "any_param",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "correct index method with offset + adding params (ignore)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// request variables\r",
-									"const expectedKeys = [\"status\", \"result\"];\r",
-									"const first_user_id = pm.variables.get(\"first_user_id\");\r",
-									"const offset = pm.variables.get(\"offset\");\r",
-									"const count = pm.variables.get(\"count\");\r",
-									"\r",
-									"// response variables from json if exist\r",
-									"var jsonData = Object();\r",
-									"var have_json;\r",
-									"pm.test(\"Response to have JSON-schema\", function() {\r",
-									"    try {\r",
-									"        jsonData = pm.response.json();\r",
-									"        have_json = true;\r",
-									"    }\r",
-									"    catch {\r",
-									"        have_json = false;\r",
-									"    };\r",
-									"    pm.expect(have_json).is.equal(true);\r",
-									"});\r",
-									"// postman does not contain normal methods for stopping all tests :(\r",
-									"if (have_json == false) {\r",
-									"    return;\r",
-									"};\r",
-									"\r",
-									"var correct_keys = Boolean();\r",
-									"pm.test(\"All keys is correct\", function() {\r",
-									"    const actualKeys = Object.keys(jsonData);\r",
-									"    correct_keys = pm.expect(JSON.stringify(actualKeys)).is.equal(JSON.stringify(expectedKeys));\r",
-									"});\r",
-									"// postman does not contain normal methods for stopping all tests :(\r",
-									"if (correct_keys == false) {\r",
-									"    return;\r",
-									"};\r",
-									"\r",
-									"const users = jsonData[expectedKeys[1]];\r",
-									"var ids = [];\r",
-									"for (i in users) {\r",
-									"    ids.push(users[i].id);\r",
-									"};\r",
-									"\r",
-									"pm.test(\"json.status is OK\", function() {\r",
-									"    pm.expect(jsonData.status).is.equal(\"OK\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct offset\", function() {\r",
-									"    var current_id = jsonData.result[0].id\r",
-									"    pm.expect(current_id - first_user_id).is.equal(pm.variables.get(\"offset\"));\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Results is sorted by id ascending\", function() {\r",
-									"    var sorted_ids = [...ids].sort();\r",
-									"    pm.expect(JSON.stringify(ids)).is.equal(JSON.stringify(sorted_ids));\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Type of result.id is string\", function() {\r",
-									"    goodType = \"string\";\r",
-									"    for (i in users) {\r",
-									"        if (typeof(users[i].id) != \"string\") {\r",
-									"            goodType = typeof(users[i].id);\r",
-									"        };\r",
-									"    };\r",
-									"    pm.expect(goodType).is.equal(\"string\");    \r",
-									"});\r",
-									"\r",
-									"pm.test(\"Type of result.name is string\", function() {\r",
-									"    goodType = \"string\";\r",
-									"    for (i in users) {\r",
-									"        if (typeof(users[i].name) != \"string\") {\r",
-									"            goodType = typeof(users[i].id);\r",
-									"        };\r",
-									"    };\r",
-									"    pm.expect(goodType).is.equal(\"string\");    \r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"pm.variables.set(\"offset\", 5);\r",
-									"\r",
-									"url = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")\r",
-									"pm.sendRequest({\r",
-									"    url: url,\r",
-									"    method: 'GET',\r",
-									"}, function (err, res) {\r",
-									"    pm.variables.set(\"first_user_id\", res.json().result[0].id);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}:{{port}}?offset={{offset}}&any_param=1",
-							"host": [
-								"{{host}}"
-							],
-							"port": "{{port}}",
-							"query": [
-								{
-									"key": "offset",
-									"value": "{{offset}}"
-								},
-								{
-									"key": "any_param",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"description": "The behavior for this group of tests is not defined in the API description",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"pm.test(\"Status code is 200\", function() {",
-							"    pm.expect(pm.response).to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"Time to response lower than 500 ms\", function() {",
-							"    pm.expect(pm.response.responseTime).to.be.below(500);",
-							"});",
-							"",
-							"pm.test(\"Response to have body\", function() {",
-							"    pm.expect(pm.response.to.have.body());",
-							"});",
-							"",
-							"pm.test(\"Response to have content-type in header\", function() {",
-							"    pm.expect(pm.response.to.have.header(\"Content-Type\"));",
-							"});",
-							"",
-							"pm.test(\"Response to have correct content type application/json\", function() {",
-							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
-							"});"
-						]
-					}
-				}
-			]
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Статус-код ответа '200'\", function() {",
+					"    pm.expect(pm.response).to.have.status(200);",
+					"});",
+					"",
+					"pm.test(\"Время ответа меньше 0,5 секунды\", function() {",
+					"    pm.expect(pm.response.responseTime).to.be.below(500);",
+					"});",
+					"",
+					"pm.test(\"Ответ имеет тело\", function() {",
+					"    pm.expect(pm.response.to.have.body());",
+					"});",
+					"",
+					"pm.test(\"В заголовке ответа есть параметр 'Content-type'\", function() {",
+					"    pm.expect(pm.response.to.have.header(\"Content-Type\"));",
+					"});",
+					"",
+					"pm.test(\"В заголовке ответа параметр 'Content-type' равен 'application/json'\", function() {",
+					"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+					"});",
+					"",
+					"// response variables from json if exist",
+					"var jsonData = Object();",
+					"var have_json;",
+					"pm.test(\"Тело ответа имеет тип JSON\", function() {",
+					"    try {",
+					"        jsonData = pm.response.json();",
+					"        have_json = true;",
+					"    }",
+					"    catch {",
+					"        have_json = false;",
+					"    };",
+					"    pm.expect(have_json).is.equal(true);",
+					"});",
+					"// postman does not contain normal methods for stopping all tests :(",
+					"if (have_json == false) {",
+					"    pm.environment.set(null, jsonData);",
+					"    return;",
+					"}",
+					"else {",
+					"    pm.environment.set(\"jsonData\", jsonData);",
+					"};"
+				]
+			}
 		}
 	],
 	"variable": [
